@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:codivium_notes_app/features/notes/data/datasources/notes_local_datasource.dart';
 import 'package:codivium_notes_app/features/notes/data/models/note_model.dart';
 import 'package:codivium_notes_app/features/notes/data/models/todo_model.dart';
