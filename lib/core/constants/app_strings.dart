@@ -17,4 +17,3 @@ class AppStrings {
   static const String darkMode = 'Dark Mode';
   static const String lightMode = 'Light Mode';
 }
-

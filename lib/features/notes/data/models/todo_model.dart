@@ -29,4 +29,3 @@ class TodoModel extends Todo {
     };
   }
 }
-

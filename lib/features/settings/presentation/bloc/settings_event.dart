@@ -18,4 +18,3 @@ class ChangeFontEvent extends SettingsEvent {
   @override
   List<Object?> get props => [fontFamily];
 }
-

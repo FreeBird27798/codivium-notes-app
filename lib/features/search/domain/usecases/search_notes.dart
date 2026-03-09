@@ -11,4 +11,3 @@ class SearchNotes {
     return repository.searchNotes(query);
   }
 }
-

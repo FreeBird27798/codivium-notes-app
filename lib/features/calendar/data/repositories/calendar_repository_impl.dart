@@ -14,8 +14,10 @@ class CalendarRepositoryImpl implements CalendarRepository {
   }
 
   @override
-  Future<Either<Exception, List<Note>>> getNotesByDateRange(DateTime start, DateTime end) async {
+  Future<Either<Exception, List<Note>>> getNotesByDateRange(
+    DateTime start,
+    DateTime end,
+  ) async {
     throw UnimplementedError();
   }
 }
-

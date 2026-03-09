@@ -23,4 +23,3 @@ class SettingsRepositoryImpl implements SettingsRepository {
     throw UnimplementedError();
   }
 }
-

@@ -8,4 +8,3 @@ class NoteSliverGrid extends StatelessWidget {
     return const Placeholder();
   }
 }
-

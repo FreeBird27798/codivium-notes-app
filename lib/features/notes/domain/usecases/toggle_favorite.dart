@@ -10,4 +10,3 @@ class ToggleFavorite {
     return repository.toggleFavorite(id);
   }
 }
-

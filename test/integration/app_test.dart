@@ -5,4 +5,3 @@ void main() {
     testWidgets('app should start without crashing', (tester) async {});
   });
 }
-

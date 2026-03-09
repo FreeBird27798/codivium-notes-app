@@ -5,4 +5,3 @@ void main() {
     test('should return notes for a specific date from repository', () {});
   });
 }
-

@@ -35,4 +35,3 @@ class NotesError extends NotesState {
   @override
   List<Object?> get props => [message];
 }
-

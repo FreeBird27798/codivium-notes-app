@@ -6,4 +6,3 @@ abstract class SettingsRepository {
   Future<Either<Exception, void>> toggleTheme();
   Future<Either<Exception, void>> changeFont(String fontFamily);
 }
-

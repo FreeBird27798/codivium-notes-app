@@ -27,7 +27,9 @@ class CalendarLocalDatasourceImpl implements CalendarLocalDatasource {
 
   @override
   Future<List<NoteModel>> getNotesByDateRange(
-      DateTime start, DateTime end) async {
+    DateTime start,
+    DateTime end,
+  ) async {
     final db = await databaseHelper.database;
     final startStr = start.toIso8601String();
     final endStr = end.toIso8601String();
@@ -41,4 +43,3 @@ class CalendarLocalDatasourceImpl implements CalendarLocalDatasource {
     return result.map((map) => NoteModel.fromMap(map)).toList();
   }
 }
-

@@ -5,4 +5,3 @@ void main() {
     test('should return search results from repository', () {});
   });
 }
-

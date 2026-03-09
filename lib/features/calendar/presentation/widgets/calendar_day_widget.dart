@@ -8,4 +8,3 @@ class CalendarDayWidget extends StatelessWidget {
     return const Placeholder();
   }
 }
-

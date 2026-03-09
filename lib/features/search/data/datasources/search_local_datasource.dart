@@ -24,4 +24,3 @@ class SearchLocalDatasourceImpl implements SearchLocalDatasource {
     return result.map((map) => NoteModel.fromMap(map)).toList();
   }
 }
-

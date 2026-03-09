@@ -9,4 +9,3 @@ void main() {
     test('should change font successfully', () {});
   });
 }
-

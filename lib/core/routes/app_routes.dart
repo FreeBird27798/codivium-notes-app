@@ -14,27 +14,18 @@ const calendarScreen = "/calendarScreen";
 const settingsScreen = "/settingsScreen";
 
 List<GetPage> appRoutes() => [
-      fadeTransitionPage(
-        name: notesListScreen,
-        page: () => const NotesListScreen(),
-      ),
-      fadeTransitionPage(
-        name: noteEditorScreen,
-        page: () => const NoteEditorScreen(),
-      ),
-      fadeTransitionPage(
-        name: searchScreen,
-        page: () => const SearchScreen(),
-      ),
-      fadeTransitionPage(
-        name: calendarScreen,
-        page: () => const CalendarScreen(),
-      ),
-      fadeTransitionPage(
-        name: settingsScreen,
-        page: () => const SettingsScreen(),
-      ),
-    ];
+  fadeTransitionPage(
+    name: notesListScreen,
+    page: () => const NotesListScreen(),
+  ),
+  fadeTransitionPage(
+    name: noteEditorScreen,
+    page: () => const NoteEditorScreen(),
+  ),
+  fadeTransitionPage(name: searchScreen, page: () => const SearchScreen()),
+  fadeTransitionPage(name: calendarScreen, page: () => const CalendarScreen()),
+  fadeTransitionPage(name: settingsScreen, page: () => const SettingsScreen()),
+];
 
 GetPage fadeTransitionPage({
   required String name,
@@ -56,4 +47,3 @@ class GetMiddlewareLogging extends GetMiddleware {
     return super.onPageCalled(page);
   }
 }
-

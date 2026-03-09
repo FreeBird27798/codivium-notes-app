@@ -10,4 +10,3 @@ class ChangeFont {
     return repository.changeFont(fontFamily);
   }
 }
-

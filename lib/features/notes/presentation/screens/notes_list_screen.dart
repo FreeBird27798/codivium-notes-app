@@ -5,9 +5,6 @@ class NotesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Placeholder(),
-    );
+    return const Scaffold(body: Placeholder());
   }
 }
-

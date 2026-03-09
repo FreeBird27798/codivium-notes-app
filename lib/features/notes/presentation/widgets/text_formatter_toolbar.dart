@@ -8,4 +8,3 @@ class TextFormatterToolbar extends StatelessWidget {
     return const Placeholder();
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:codivium_notes_app/features/notes/domain/entities/note.dart';
 
 abstract class NotesEvent extends Equatable {
   const NotesEvent();
@@ -17,14 +18,20 @@ class LoadNoteById extends NotesEvent {
   List<Object?> get props => [id];
 }
 
-class AddNote extends NotesEvent {}
-
-class EditNote extends NotesEvent {
-  final String id;
-  const EditNote(this.id);
+class AddNote extends NotesEvent {
+  final Note note;
+  const AddNote(this.note);
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [note];
+}
+
+class EditNote extends NotesEvent {
+  final Note note;
+  const EditNote(this.note);
+
+  @override
+  List<Object?> get props => [note];
 }
 
 class RemoveNote extends NotesEvent {
@@ -60,4 +67,3 @@ class CopyNoteToClipboard extends NotesEvent {
   @override
   List<Object?> get props => [id];
 }
-

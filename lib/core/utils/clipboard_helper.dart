@@ -7,4 +7,3 @@ class ClipboardHelper {
     await Clipboard.setData(ClipboardData(text: text));
   }
 }
-

@@ -5,4 +5,3 @@ void main() {
     test('should return list of NoteModel when searchNotes is called', () {});
   });
 }
-

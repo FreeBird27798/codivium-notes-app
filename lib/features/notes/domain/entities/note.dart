@@ -23,14 +23,13 @@ class Note extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        content,
-        color,
-        isFavorite,
-        importance,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    title,
+    content,
+    color,
+    isFavorite,
+    importance,
+    createdAt,
+    updatedAt,
+  ];
 }
-

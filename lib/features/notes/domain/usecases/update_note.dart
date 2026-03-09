@@ -11,4 +11,3 @@ class UpdateNote {
     return repository.updateNote(note);
   }
 }
-

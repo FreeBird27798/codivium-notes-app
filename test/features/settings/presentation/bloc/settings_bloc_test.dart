@@ -2,13 +2,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:codivium_notes_app/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:codivium_notes_app/features/settings/presentation/bloc/settings_state.dart';
+import '../../../../helpers/test_helpers.mocks.dart';
 
 void main() {
   group('SettingsBloc', () {
     late SettingsBloc settingsBloc;
+    late MockSettingsRepository mockSettingsRepository;
+    late MockToggleTheme mockToggleTheme;
+    late MockChangeFont mockChangeFont;
 
     setUp(() {
-      settingsBloc = SettingsBloc();
+      mockSettingsRepository = MockSettingsRepository();
+      mockToggleTheme = MockToggleTheme();
+      mockChangeFont = MockChangeFont();
+      settingsBloc = SettingsBloc(
+        settingsRepository: mockSettingsRepository,
+        toggleTheme: mockToggleTheme,
+        changeFont: mockChangeFont,
+      );
     });
 
     tearDown(() {
@@ -21,10 +32,12 @@ void main() {
 
     blocTest<SettingsBloc, SettingsState>(
       'emits [] when nothing is added',
-      build: () => settingsBloc,
+      build: () => SettingsBloc(
+        settingsRepository: mockSettingsRepository,
+        toggleTheme: mockToggleTheme,
+        changeFont: mockChangeFont,
+      ),
       expect: () => [],
     );
   });
 }
-
-
