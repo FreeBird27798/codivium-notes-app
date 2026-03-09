@@ -11,4 +11,3 @@ class SortNotesByImportance {
     return repository.sortByImportance();
   }
 }
-

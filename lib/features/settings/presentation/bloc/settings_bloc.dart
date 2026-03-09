@@ -20,10 +20,18 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<ChangeFontEvent>(_onChangeFont);
   }
 
-  Future<void> _onLoadSettings(LoadSettings event, Emitter<SettingsState> emit) async {}
+  Future<void> _onLoadSettings(
+    LoadSettings event,
+    Emitter<SettingsState> emit,
+  ) async {}
 
-  Future<void> _onToggleTheme(ToggleThemeEvent event, Emitter<SettingsState> emit) async {}
+  Future<void> _onToggleTheme(
+    ToggleThemeEvent event,
+    Emitter<SettingsState> emit,
+  ) async {}
 
-  Future<void> _onChangeFont(ChangeFontEvent event, Emitter<SettingsState> emit) async {}
+  Future<void> _onChangeFont(
+    ChangeFontEvent event,
+    Emitter<SettingsState> emit,
+  ) async {}
 }
-

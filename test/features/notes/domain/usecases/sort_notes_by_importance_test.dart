@@ -40,7 +40,9 @@ void main() {
 
   group('SortNotesByImportance', () {
     test('should return notes sorted by importance', () async {
-      when(mockRepository.sortByImportance()).thenAnswer((_) async => Right(sortedNotes));
+      when(
+        mockRepository.sortByImportance(),
+      ).thenAnswer((_) async => Right(sortedNotes));
 
       final result = await usecase();
 
@@ -50,4 +52,3 @@ void main() {
     });
   });
 }
-

@@ -8,4 +8,3 @@ class SearchBarWidget extends StatelessWidget {
     return const Placeholder();
   }
 }
-

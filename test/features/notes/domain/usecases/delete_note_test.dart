@@ -15,7 +15,9 @@ void main() {
 
   group('DeleteNote', () {
     test('should delete note via the repository', () async {
-      when(mockRepository.deleteNote('note_1')).thenAnswer((_) async => const Right(null));
+      when(
+        mockRepository.deleteNote('note_1'),
+      ).thenAnswer((_) async => const Right(null));
 
       final result = await usecase('note_1');
 
@@ -25,4 +27,3 @@ void main() {
     });
   });
 }
-

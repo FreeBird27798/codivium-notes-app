@@ -28,7 +28,9 @@ void main() {
 
   group('GetNoteById', () {
     test('should get note by id from the repository', () async {
-      when(mockRepository.getNoteById('note_1')).thenAnswer((_) async => Right(testNote));
+      when(
+        mockRepository.getNoteById('note_1'),
+      ).thenAnswer((_) async => Right(testNote));
 
       final result = await usecase('note_1');
 
@@ -38,4 +40,3 @@ void main() {
     });
   });
 }
-

@@ -99,4 +99,3 @@ class NotesRepositoryImpl implements NotesRepository {
     }
   }
 }
-

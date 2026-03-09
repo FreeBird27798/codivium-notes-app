@@ -5,4 +5,3 @@ void main() {
     test('should return list of notes when searchNotes is successful', () {});
   });
 }
-

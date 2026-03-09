@@ -18,4 +18,3 @@ class Todo extends Equatable {
   @override
   List<Object?> get props => [id, noteId, text, isDone, order];
 }
-

@@ -28,7 +28,9 @@ void main() {
 
   group('UpdateNote', () {
     test('should update note via the repository', () async {
-      when(mockRepository.updateNote(testNote)).thenAnswer((_) async => const Right(null));
+      when(
+        mockRepository.updateNote(testNote),
+      ).thenAnswer((_) async => const Right(null));
 
       final result = await usecase(testNote);
 
@@ -38,4 +40,3 @@ void main() {
     });
   });
 }
-

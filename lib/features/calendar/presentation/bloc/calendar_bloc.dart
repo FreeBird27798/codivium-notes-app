@@ -11,8 +11,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<SelectDateRange>(_onSelectDateRange);
   }
 
-  Future<void> _onSelectDate(SelectDate event, Emitter<CalendarState> emit) async {}
+  Future<void> _onSelectDate(
+    SelectDate event,
+    Emitter<CalendarState> emit,
+  ) async {}
 
-  Future<void> _onSelectDateRange(SelectDateRange event, Emitter<CalendarState> emit) async {}
+  Future<void> _onSelectDateRange(
+    SelectDateRange event,
+    Emitter<CalendarState> emit,
+  ) async {}
 }
-

@@ -10,4 +10,3 @@ abstract class NotesRepository {
   Future<Either<Exception, void>> toggleFavorite(String id);
   Future<Either<Exception, List<Note>>> sortByImportance();
 }
-

@@ -8,4 +8,3 @@ class ThemeSwitchWidget extends StatelessWidget {
     return const Placeholder();
   }
 }
-

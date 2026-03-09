@@ -27,21 +27,21 @@ void main() {
   );
 
   group('NotesRepositoryImpl', () {
-    test('should return list of notes when getAllNotes is successful', () async {
-      when(mockDatasource.getAllNotes()).thenAnswer((_) async => [testNote]);
+    test(
+      'should return list of notes when getAllNotes is successful',
+      () async {
+        when(mockDatasource.getAllNotes()).thenAnswer((_) async => [testNote]);
 
-      final result = await repository.getAllNotes();
+        final result = await repository.getAllNotes();
 
-      expect(result, isA<Right>());
-      result.fold(
-        (l) => fail('should not be Left'),
-        (r) {
+        expect(result, isA<Right>());
+        result.fold((l) => fail('should not be Left'), (r) {
           expect(r.length, 1);
           expect(r.first.id, 'note_1');
-        },
-      );
-      verify(mockDatasource.getAllNotes()).called(1);
-    });
+        });
+        verify(mockDatasource.getAllNotes()).called(1);
+      },
+    );
 
     test('should return Left when getAllNotes throws', () async {
       when(mockDatasource.getAllNotes()).thenThrow(Exception('db error'));
@@ -52,7 +52,9 @@ void main() {
     });
 
     test('should return note when getNoteById is successful', () async {
-      when(mockDatasource.getNoteById('note_1')).thenAnswer((_) async => testNote);
+      when(
+        mockDatasource.getNoteById('note_1'),
+      ).thenAnswer((_) async => testNote);
 
       final result = await repository.getNoteById('note_1');
 
@@ -116,7 +118,9 @@ void main() {
     });
 
     test('should return Left when deleteNote throws', () async {
-      when(mockDatasource.deleteNote('note_1')).thenThrow(Exception('delete error'));
+      when(
+        mockDatasource.deleteNote('note_1'),
+      ).thenThrow(Exception('delete error'));
 
       final result = await repository.deleteNote('note_1');
 
@@ -133,40 +137,46 @@ void main() {
     });
 
     test('should return Left when toggleFavorite throws', () async {
-      when(mockDatasource.toggleFavorite('note_1')).thenThrow(Exception('fav error'));
+      when(
+        mockDatasource.toggleFavorite('note_1'),
+      ).thenThrow(Exception('fav error'));
 
       final result = await repository.toggleFavorite('note_1');
 
       expect(result, isA<Left>());
     });
 
-    test('should return sorted notes when sortByImportance is successful', () async {
-      final note2 = NoteModel(
-        id: 'note_2',
-        title: 'Important',
-        content: 'Content',
-        color: 0xFF00FF00,
-        isFavorite: false,
-        importance: 5,
-        createdAt: now,
-        updatedAt: now,
-      );
-      when(mockDatasource.sortByImportance()).thenAnswer((_) async => [note2, testNote]);
+    test(
+      'should return sorted notes when sortByImportance is successful',
+      () async {
+        final note2 = NoteModel(
+          id: 'note_2',
+          title: 'Important',
+          content: 'Content',
+          color: 0xFF00FF00,
+          isFavorite: false,
+          importance: 5,
+          createdAt: now,
+          updatedAt: now,
+        );
+        when(
+          mockDatasource.sortByImportance(),
+        ).thenAnswer((_) async => [note2, testNote]);
 
-      final result = await repository.sortByImportance();
+        final result = await repository.sortByImportance();
 
-      expect(result, isA<Right>());
-      result.fold(
-        (l) => fail('should not be Left'),
-        (r) {
+        expect(result, isA<Right>());
+        result.fold((l) => fail('should not be Left'), (r) {
           expect(r.length, 2);
           expect(r.first.importance, 5);
-        },
-      );
-    });
+        });
+      },
+    );
 
     test('should return Left when sortByImportance throws', () async {
-      when(mockDatasource.sortByImportance()).thenThrow(Exception('sort error'));
+      when(
+        mockDatasource.sortByImportance(),
+      ).thenThrow(Exception('sort error'));
 
       final result = await repository.sortByImportance();
 
@@ -174,4 +184,3 @@ void main() {
     });
   });
 }
-

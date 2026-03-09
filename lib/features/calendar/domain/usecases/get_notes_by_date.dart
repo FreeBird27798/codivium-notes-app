@@ -11,4 +11,3 @@ class GetNotesByDate {
     return repository.getNotesByDate(date);
   }
 }
-

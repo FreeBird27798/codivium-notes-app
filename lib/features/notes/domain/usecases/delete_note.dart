@@ -10,4 +10,3 @@ class DeleteNote {
     return repository.deleteNote(id);
   }
 }
-

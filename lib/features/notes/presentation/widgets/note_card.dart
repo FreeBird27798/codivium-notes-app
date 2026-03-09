@@ -8,4 +8,3 @@ class NoteCard extends StatelessWidget {
     return const Placeholder();
   }
 }
-

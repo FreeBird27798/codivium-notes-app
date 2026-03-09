@@ -23,4 +23,3 @@ class SelectDateRange extends CalendarEvent {
   @override
   List<Object?> get props => [start, end];
 }
-

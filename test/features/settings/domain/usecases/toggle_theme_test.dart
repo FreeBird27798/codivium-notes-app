@@ -5,4 +5,3 @@ void main() {
     test('should toggle theme via the repository', () {});
   });
 }
-

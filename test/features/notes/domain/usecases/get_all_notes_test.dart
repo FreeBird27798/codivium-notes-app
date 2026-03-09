@@ -30,7 +30,9 @@ void main() {
 
   group('GetAllNotes', () {
     test('should get all notes from the repository', () async {
-      when(mockRepository.getAllNotes()).thenAnswer((_) async => Right(testNotes));
+      when(
+        mockRepository.getAllNotes(),
+      ).thenAnswer((_) async => Right(testNotes));
 
       final result = await usecase();
 
@@ -40,4 +42,3 @@ void main() {
     });
   });
 }
-

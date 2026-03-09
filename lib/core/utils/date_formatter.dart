@@ -11,4 +11,3 @@ class DateFormatter {
     return DateFormat.yMMMd().add_jm().format(date);
   }
 }
-

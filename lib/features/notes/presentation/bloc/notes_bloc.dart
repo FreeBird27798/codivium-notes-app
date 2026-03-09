@@ -51,7 +51,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     );
   }
 
-  Future<void> _onLoadNoteById(LoadNoteById event, Emitter<NotesState> emit) async {
+  Future<void> _onLoadNoteById(
+    LoadNoteById event,
+    Emitter<NotesState> emit,
+  ) async {
     emit(NotesLoading());
     final result = await getNoteById(event.id);
     result.fold(
@@ -102,7 +105,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     );
   }
 
-  Future<void> _onToggleFavorite(ToggleNoteFavorite event, Emitter<NotesState> emit) async {
+  Future<void> _onToggleFavorite(
+    ToggleNoteFavorite event,
+    Emitter<NotesState> emit,
+  ) async {
     emit(NotesLoading());
     final result = await toggleFavorite(event.id);
     if (result.isLeft()) {
@@ -116,7 +122,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     );
   }
 
-  Future<void> _onSortByImportance(SortByImportance event, Emitter<NotesState> emit) async {
+  Future<void> _onSortByImportance(
+    SortByImportance event,
+    Emitter<NotesState> emit,
+  ) async {
     emit(NotesLoading());
     final result = await sortNotesByImportance();
     result.fold(
@@ -125,7 +134,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     );
   }
 
-  Future<void> _onShareNote(ShareNoteEvent event, Emitter<NotesState> emit) async {
+  Future<void> _onShareNote(
+    ShareNoteEvent event,
+    Emitter<NotesState> emit,
+  ) async {
     final result = await getNoteById(event.id);
     if (result.isLeft()) {
       result.fold((error) => emit(NotesError(error.toString())), (_) {});
@@ -135,7 +147,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     await shareNote(title: note.title, content: note.content);
   }
 
-  Future<void> _onCopyToClipboard(CopyNoteToClipboard event, Emitter<NotesState> emit) async {
+  Future<void> _onCopyToClipboard(
+    CopyNoteToClipboard event,
+    Emitter<NotesState> emit,
+  ) async {
     final result = await getNoteById(event.id);
     if (result.isLeft()) {
       result.fold((error) => emit(NotesError(error.toString())), (_) {});
@@ -145,4 +160,3 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     await ClipboardHelper.copy('${note.title}\n\n${note.content}');
   }
 }
-

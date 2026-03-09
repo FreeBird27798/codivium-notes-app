@@ -11,4 +11,3 @@ class CreateNote {
     return repository.createNote(note);
   }
 }
-

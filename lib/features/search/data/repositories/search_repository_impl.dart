@@ -13,4 +13,3 @@ class SearchRepositoryImpl implements SearchRepository {
     throw UnimplementedError();
   }
 }
-

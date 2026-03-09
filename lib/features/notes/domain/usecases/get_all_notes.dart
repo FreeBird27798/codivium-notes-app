@@ -11,4 +11,3 @@ class GetAllNotes {
     return repository.getAllNotes();
   }
 }
-

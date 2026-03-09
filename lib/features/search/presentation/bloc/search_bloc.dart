@@ -11,8 +11,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<ClearSearch>(_onClearSearch);
   }
 
-  Future<void> _onSearchQueryChanged(SearchQueryChanged event, Emitter<SearchState> emit) async {}
+  Future<void> _onSearchQueryChanged(
+    SearchQueryChanged event,
+    Emitter<SearchState> emit,
+  ) async {}
 
-  Future<void> _onClearSearch(ClearSearch event, Emitter<SearchState> emit) async {}
+  Future<void> _onClearSearch(
+    ClearSearch event,
+    Emitter<SearchState> emit,
+  ) async {}
 }
-

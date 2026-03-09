@@ -140,4 +140,3 @@ class NotesLocalDatasourceImpl implements NotesLocalDatasource {
     );
   }
 }
-

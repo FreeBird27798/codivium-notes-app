@@ -45,4 +45,3 @@ import 'package:codivium_notes_app/features/settings/domain/usecases/change_font
   ChangeFont,
 ])
 void main() {}
-

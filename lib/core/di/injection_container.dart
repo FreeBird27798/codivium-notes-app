@@ -61,16 +61,18 @@ void _initNotes() {
   sl.registerLazySingleton(() => SortNotesByImportance(sl()));
   sl.registerLazySingleton(() => ShareNote());
 
-  sl.registerFactory(() => NotesBloc(
-        getAllNotes: sl(),
-        getNoteById: sl(),
-        createNote: sl(),
-        updateNote: sl(),
-        deleteNote: sl(),
-        toggleFavorite: sl(),
-        sortNotesByImportance: sl(),
-        shareNote: sl(),
-      ));
+  sl.registerFactory(
+    () => NotesBloc(
+      getAllNotes: sl(),
+      getNoteById: sl(),
+      createNote: sl(),
+      updateNote: sl(),
+      deleteNote: sl(),
+      toggleFavorite: sl(),
+      sortNotesByImportance: sl(),
+      shareNote: sl(),
+    ),
+  );
 }
 
 void _initSearch() {
@@ -113,10 +115,11 @@ void _initSettings() {
   sl.registerLazySingleton(() => ToggleTheme(sl()));
   sl.registerLazySingleton(() => ChangeFont(sl()));
 
-  sl.registerFactory(() => SettingsBloc(
-        settingsRepository: sl(),
-        toggleTheme: sl(),
-        changeFont: sl(),
-      ));
+  sl.registerFactory(
+    () => SettingsBloc(
+      settingsRepository: sl(),
+      toggleTheme: sl(),
+      changeFont: sl(),
+    ),
+  );
 }
-

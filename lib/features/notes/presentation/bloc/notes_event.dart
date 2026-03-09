@@ -67,4 +67,3 @@ class CopyNoteToClipboard extends NotesEvent {
   @override
   List<Object?> get props => [id];
 }
-

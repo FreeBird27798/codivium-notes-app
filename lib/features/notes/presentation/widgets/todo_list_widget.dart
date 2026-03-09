@@ -8,4 +8,3 @@ class TodoListWidget extends StatelessWidget {
     return const Placeholder();
   }
 }
-

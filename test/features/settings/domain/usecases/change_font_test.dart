@@ -5,4 +5,3 @@ void main() {
     test('should change font via the repository', () {});
   });
 }
-

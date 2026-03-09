@@ -85,4 +85,3 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
     }
   }
 }
-

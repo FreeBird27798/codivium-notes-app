@@ -10,4 +10,3 @@ class ToggleTheme {
     return repository.toggleTheme();
   }
 }
-

@@ -74,15 +74,18 @@ void main() {
   );
 
   group('NotesLocalDatasource', () {
-    test('should return list of NoteModel when getAllNotes is called', () async {
-      await db.insert('notes', testNote.toMap());
+    test(
+      'should return list of NoteModel when getAllNotes is called',
+      () async {
+        await db.insert('notes', testNote.toMap());
 
-      final result = await datasource.getAllNotes();
+        final result = await datasource.getAllNotes();
 
-      expect(result.length, 1);
-      expect(result.first.id, 'note_1');
-      expect(result.first.title, 'Test Note');
-    });
+        expect(result.length, 1);
+        expect(result.first.id, 'note_1');
+        expect(result.first.title, 'Test Note');
+      },
+    );
 
     test('should return NoteModel when getNoteById is called', () async {
       await db.insert('notes', testNote.toMap());
@@ -124,7 +127,11 @@ void main() {
 
       await datasource.updateNote(updated);
 
-      final result = await db.query('notes', where: 'id = ?', whereArgs: ['note_1']);
+      final result = await db.query(
+        'notes',
+        where: 'id = ?',
+        whereArgs: ['note_1'],
+      );
       expect(result.first['title'], 'Updated Title');
     });
 
@@ -142,7 +149,11 @@ void main() {
 
       await datasource.toggleFavorite('note_1');
 
-      final result = await db.query('notes', where: 'id = ?', whereArgs: ['note_1']);
+      final result = await db.query(
+        'notes',
+        where: 'id = ?',
+        whereArgs: ['note_1'],
+      );
       expect(result.first['is_favorite'], 1);
     });
 
@@ -201,7 +212,11 @@ void main() {
 
       await datasource.updateTodo(updated);
 
-      final result = await db.query('todos', where: 'id = ?', whereArgs: ['todo_1']);
+      final result = await db.query(
+        'todos',
+        where: 'id = ?',
+        whereArgs: ['todo_1'],
+      );
       expect(result.first['todo_text'], 'Buy eggs');
       expect(result.first['is_done'], 1);
     });
@@ -217,4 +232,3 @@ void main() {
     });
   });
 }
-

@@ -45,15 +45,15 @@ void main() {
   });
 
   NotesBloc buildBloc() => NotesBloc(
-        getAllNotes: mockGetAllNotes,
-        getNoteById: mockGetNoteById,
-        createNote: mockCreateNote,
-        updateNote: mockUpdateNote,
-        deleteNote: mockDeleteNote,
-        toggleFavorite: mockToggleFavorite,
-        sortNotesByImportance: mockSortNotesByImportance,
-        shareNote: mockShareNote,
-      );
+    getAllNotes: mockGetAllNotes,
+    getNoteById: mockGetNoteById,
+    createNote: mockCreateNote,
+    updateNote: mockUpdateNote,
+    deleteNote: mockDeleteNote,
+    toggleFavorite: mockToggleFavorite,
+    sortNotesByImportance: mockSortNotesByImportance,
+    shareNote: mockShareNote,
+  );
 
   group('NotesBloc', () {
     test('initial state should be NotesInitial', () {
@@ -75,7 +75,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesError] when LoadNotes fails',
       build: () {
-        when(mockGetAllNotes()).thenAnswer((_) async => Left(Exception('db error')));
+        when(
+          mockGetAllNotes(),
+        ).thenAnswer((_) async => Left(Exception('db error')));
         return buildBloc();
       },
       act: (bloc) => bloc.add(LoadNotes()),
@@ -85,7 +87,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NoteDetailLoaded] when LoadNoteById succeeds',
       build: () {
-        when(mockGetNoteById('note_1')).thenAnswer((_) async => Right(testNote));
+        when(
+          mockGetNoteById('note_1'),
+        ).thenAnswer((_) async => Right(testNote));
         return buildBloc();
       },
       act: (bloc) => bloc.add(const LoadNoteById('note_1')),
@@ -95,7 +99,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesError] when LoadNoteById fails',
       build: () {
-        when(mockGetNoteById('bad')).thenAnswer((_) async => Left(Exception('not found')));
+        when(
+          mockGetNoteById('bad'),
+        ).thenAnswer((_) async => Left(Exception('not found')));
         return buildBloc();
       },
       act: (bloc) => bloc.add(const LoadNoteById('bad')),
@@ -105,7 +111,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesLoaded] when AddNote succeeds',
       build: () {
-        when(mockCreateNote(testNote)).thenAnswer((_) async => const Right(null));
+        when(
+          mockCreateNote(testNote),
+        ).thenAnswer((_) async => const Right(null));
         when(mockGetAllNotes()).thenAnswer((_) async => Right(testNotes));
         return buildBloc();
       },
@@ -116,7 +124,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesError] when AddNote fails',
       build: () {
-        when(mockCreateNote(testNote)).thenAnswer((_) async => Left(Exception('insert error')));
+        when(
+          mockCreateNote(testNote),
+        ).thenAnswer((_) async => Left(Exception('insert error')));
         return buildBloc();
       },
       act: (bloc) => bloc.add(AddNote(testNote)),
@@ -126,7 +136,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesLoaded] when RemoveNote succeeds',
       build: () {
-        when(mockDeleteNote('note_1')).thenAnswer((_) async => const Right(null));
+        when(
+          mockDeleteNote('note_1'),
+        ).thenAnswer((_) async => const Right(null));
         when(mockGetAllNotes()).thenAnswer((_) async => const Right([]));
         return buildBloc();
       },
@@ -137,7 +149,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesLoaded] when SortByImportance succeeds',
       build: () {
-        when(mockSortNotesByImportance()).thenAnswer((_) async => Right(testNotes));
+        when(
+          mockSortNotesByImportance(),
+        ).thenAnswer((_) async => Right(testNotes));
         return buildBloc();
       },
       act: (bloc) => bloc.add(SortByImportance()),
@@ -147,7 +161,9 @@ void main() {
     blocTest<NotesBloc, NotesState>(
       'emits [NotesLoading, NotesLoaded] when ToggleNoteFavorite succeeds',
       build: () {
-        when(mockToggleFavorite('note_1')).thenAnswer((_) async => const Right(null));
+        when(
+          mockToggleFavorite('note_1'),
+        ).thenAnswer((_) async => const Right(null));
         when(mockGetAllNotes()).thenAnswer((_) async => Right(testNotes));
         return buildBloc();
       },
@@ -156,5 +172,3 @@ void main() {
     );
   });
 }
-
-

@@ -11,4 +11,3 @@ class GetNoteById {
     return repository.getNoteById(id);
   }
 }
-
