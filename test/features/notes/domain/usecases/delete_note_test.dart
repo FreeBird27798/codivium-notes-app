@@ -14,7 +14,7 @@ void main() {
   });
 
   group('DeleteNote', () {
-    test('should delete note via the repository', () async {
+    test('should return Right when repository succeeds', () async {
       when(
         mockRepository.deleteNote('note_1'),
       ).thenAnswer((_) async => const Right(null));
@@ -24,6 +24,17 @@ void main() {
       expect(result, const Right(null));
       verify(mockRepository.deleteNote('note_1')).called(1);
       verifyNoMoreInteractions(mockRepository);
+    });
+
+    test('should return Left when repository fails', () async {
+      when(
+        mockRepository.deleteNote('note_1'),
+      ).thenAnswer((_) async => Left(Exception('delete error')));
+
+      final result = await usecase('note_1');
+
+      expect(result, isA<Left>());
+      verify(mockRepository.deleteNote('note_1')).called(1);
     });
   });
 }

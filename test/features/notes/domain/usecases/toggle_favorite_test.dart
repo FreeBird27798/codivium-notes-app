@@ -14,7 +14,7 @@ void main() {
   });
 
   group('ToggleFavorite', () {
-    test('should toggle favorite via the repository', () async {
+    test('should return Right when repository succeeds', () async {
       when(
         mockRepository.toggleFavorite('note_1'),
       ).thenAnswer((_) async => const Right(null));
@@ -24,6 +24,17 @@ void main() {
       expect(result, const Right(null));
       verify(mockRepository.toggleFavorite('note_1')).called(1);
       verifyNoMoreInteractions(mockRepository);
+    });
+
+    test('should return Left when repository fails', () async {
+      when(
+        mockRepository.toggleFavorite('note_1'),
+      ).thenAnswer((_) async => Left(Exception('fav error')));
+
+      final result = await usecase('note_1');
+
+      expect(result, isA<Left>());
+      verify(mockRepository.toggleFavorite('note_1')).called(1);
     });
   });
 }
