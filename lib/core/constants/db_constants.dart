@@ -22,4 +22,3 @@ class DbConstants {
   static const String columnIsDone = 'is_done';
   static const String columnOrder = 'sort_order';
 }
-
