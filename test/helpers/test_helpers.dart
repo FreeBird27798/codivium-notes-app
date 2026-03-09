@@ -1,5 +1,6 @@
 import 'package:mockito/annotations.dart';
 import 'package:codivium_notes_app/core/database/database_helper.dart';
+import 'package:codivium_notes_app/core/utils/clipboard_helper.dart';
 import 'package:codivium_notes_app/features/notes/domain/repositories/notes_repository.dart';
 import 'package:codivium_notes_app/features/notes/data/datasources/notes_local_datasource.dart';
 import 'package:codivium_notes_app/features/notes/domain/usecases/get_all_notes.dart';
@@ -23,6 +24,7 @@ import 'package:codivium_notes_app/features/settings/domain/usecases/change_font
 
 @GenerateMocks([
   DatabaseHelper,
+  ClipboardHelper,
   NotesRepository,
   NotesLocalDatasource,
   GetAllNotes,

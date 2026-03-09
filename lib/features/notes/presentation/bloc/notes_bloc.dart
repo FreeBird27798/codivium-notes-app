@@ -20,6 +20,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final ToggleFavorite toggleFavorite;
   final SortNotesByImportance sortNotesByImportance;
   final ShareNote shareNote;
+  final ClipboardHelper clipboardHelper;
 
   NotesBloc({
     required this.getAllNotes,
@@ -30,6 +31,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     required this.toggleFavorite,
     required this.sortNotesByImportance,
     required this.shareNote,
+    required this.clipboardHelper,
   }) : super(NotesInitial()) {
     on<LoadNotes>(_onLoadNotes);
     on<LoadNoteById>(_onLoadNoteById);
@@ -145,6 +147,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     }
     final note = result.getOrElse(() => throw Exception());
     await shareNote(title: note.title, content: note.content);
+    emit(NoteShared());
   }
 
   Future<void> _onCopyToClipboard(
@@ -157,6 +160,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       return;
     }
     final note = result.getOrElse(() => throw Exception());
-    await ClipboardHelper.copy('${note.title}\n\n${note.content}');
+    await clipboardHelper.copy('${note.title}\n\n${note.content}');
+    emit(NoteCopied());
   }
 }

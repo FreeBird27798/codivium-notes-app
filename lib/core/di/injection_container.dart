@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:codivium_notes_app/core/database/database_helper.dart';
+import 'package:codivium_notes_app/core/utils/clipboard_helper.dart';
 import 'package:codivium_notes_app/features/notes/data/datasources/notes_local_datasource.dart';
 import 'package:codivium_notes_app/features/notes/data/repositories/notes_repository_impl.dart';
 import 'package:codivium_notes_app/features/notes/domain/repositories/notes_repository.dart';
@@ -41,6 +43,9 @@ Future<void> initDependencies() async {
 
 Future<void> _initDatabase() async {
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+  sl.registerLazySingleton<ClipboardHelper>(() => ClipboardHelper());
 }
 
 void _initNotes() {
@@ -71,6 +76,7 @@ void _initNotes() {
       toggleFavorite: sl(),
       sortNotesByImportance: sl(),
       shareNote: sl(),
+      clipboardHelper: sl(),
     ),
   );
 }
@@ -105,7 +111,7 @@ void _initCalendar() {
 
 void _initSettings() {
   sl.registerLazySingleton<SettingsLocalDatasource>(
-    () => SettingsLocalDatasourceImpl(databaseHelper: sl()),
+    () => SettingsLocalDatasourceImpl(sharedPreferences: sl()),
   );
 
   sl.registerLazySingleton<SettingsRepository>(
