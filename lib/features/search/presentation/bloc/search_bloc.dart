@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:codivium_notes_app/features/search/domain/usecases/search_notes.dart';
 import 'package:codivium_notes_app/features/search/presentation/bloc/search_event.dart';
 import 'package:codivium_notes_app/features/search/presentation/bloc/search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc() : super(SearchInitial()) {
+  final SearchNotes searchNotes;
+
+  SearchBloc({required this.searchNotes}) : super(SearchInitial()) {
     on<SearchQueryChanged>(_onSearchQueryChanged);
     on<ClearSearch>(_onClearSearch);
   }

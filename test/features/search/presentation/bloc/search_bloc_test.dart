@@ -2,13 +2,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:codivium_notes_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:codivium_notes_app/features/search/presentation/bloc/search_state.dart';
+import '../../../../helpers/test_helpers.mocks.dart';
 
 void main() {
   group('SearchBloc', () {
     late SearchBloc searchBloc;
+    late MockSearchNotes mockSearchNotes;
 
     setUp(() {
-      searchBloc = SearchBloc();
+      mockSearchNotes = MockSearchNotes();
+      searchBloc = SearchBloc(searchNotes: mockSearchNotes);
     });
 
     tearDown(() {
@@ -21,7 +24,7 @@ void main() {
 
     blocTest<SearchBloc, SearchState>(
       'emits [] when nothing is added',
-      build: () => searchBloc,
+      build: () => SearchBloc(searchNotes: mockSearchNotes),
       expect: () => [],
     );
   });

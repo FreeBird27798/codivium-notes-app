@@ -3,36 +3,60 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i10;
 
-import 'package:codivium_notes_app/core/database/database_helper.dart' as _i5;
+import 'package:codivium_notes_app/core/database/database_helper.dart' as _i9;
 import 'package:codivium_notes_app/features/calendar/data/datasources/calendar_local_datasource.dart'
-    as _i14;
+    as _i24;
 import 'package:codivium_notes_app/features/calendar/domain/repositories/calendar_repository.dart'
-    as _i13;
+    as _i7;
+import 'package:codivium_notes_app/features/calendar/domain/usecases/get_notes_by_date.dart'
+    as _i25;
 import 'package:codivium_notes_app/features/notes/data/datasources/notes_local_datasource.dart'
-    as _i9;
+    as _i12;
 import 'package:codivium_notes_app/features/notes/data/models/note_model.dart'
     as _i4;
 import 'package:codivium_notes_app/features/notes/data/models/todo_model.dart'
-    as _i10;
+    as _i13;
 import 'package:codivium_notes_app/features/notes/domain/entities/note.dart'
-    as _i8;
-import 'package:codivium_notes_app/features/notes/domain/repositories/notes_repository.dart'
-    as _i7;
-import 'package:codivium_notes_app/features/search/data/datasources/search_local_datasource.dart'
-    as _i12;
-import 'package:codivium_notes_app/features/search/domain/repositories/search_repository.dart'
     as _i11;
-import 'package:codivium_notes_app/features/settings/data/datasources/settings_local_datasource.dart'
-    as _i17;
-import 'package:codivium_notes_app/features/settings/domain/entities/app_settings.dart'
+import 'package:codivium_notes_app/features/notes/domain/repositories/notes_repository.dart'
+    as _i5;
+import 'package:codivium_notes_app/features/notes/domain/usecases/create_note.dart'
     as _i16;
-import 'package:codivium_notes_app/features/settings/domain/repositories/settings_repository.dart'
+import 'package:codivium_notes_app/features/notes/domain/usecases/delete_note.dart'
+    as _i18;
+import 'package:codivium_notes_app/features/notes/domain/usecases/get_all_notes.dart'
+    as _i14;
+import 'package:codivium_notes_app/features/notes/domain/usecases/get_note_by_id.dart'
     as _i15;
+import 'package:codivium_notes_app/features/notes/domain/usecases/share_note.dart'
+    as _i21;
+import 'package:codivium_notes_app/features/notes/domain/usecases/sort_notes_by_importance.dart'
+    as _i20;
+import 'package:codivium_notes_app/features/notes/domain/usecases/toggle_favorite.dart'
+    as _i19;
+import 'package:codivium_notes_app/features/notes/domain/usecases/update_note.dart'
+    as _i17;
+import 'package:codivium_notes_app/features/search/data/datasources/search_local_datasource.dart'
+    as _i22;
+import 'package:codivium_notes_app/features/search/domain/repositories/search_repository.dart'
+    as _i6;
+import 'package:codivium_notes_app/features/search/domain/usecases/search_notes.dart'
+    as _i23;
+import 'package:codivium_notes_app/features/settings/data/datasources/settings_local_datasource.dart'
+    as _i27;
+import 'package:codivium_notes_app/features/settings/domain/entities/app_settings.dart'
+    as _i26;
+import 'package:codivium_notes_app/features/settings/domain/repositories/settings_repository.dart'
+    as _i8;
+import 'package:codivium_notes_app/features/settings/domain/usecases/change_font.dart'
+    as _i30;
+import 'package:codivium_notes_app/features/settings/domain/usecases/toggle_theme.dart'
+    as _i29;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i18;
+import 'package:mockito/src/dummies.dart' as _i28;
 import 'package:sqflite/sqflite.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -64,465 +88,875 @@ class _FakeNoteModel_2 extends _i1.SmartFake implements _i4.NoteModel {
     : super(parent, parentInvocation);
 }
 
+class _FakeNotesRepository_3 extends _i1.SmartFake
+    implements _i5.NotesRepository {
+  _FakeNotesRepository_3(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeSearchRepository_4 extends _i1.SmartFake
+    implements _i6.SearchRepository {
+  _FakeSearchRepository_4(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCalendarRepository_5 extends _i1.SmartFake
+    implements _i7.CalendarRepository {
+  _FakeCalendarRepository_5(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeSettingsRepository_6 extends _i1.SmartFake
+    implements _i8.SettingsRepository {
+  _FakeSettingsRepository_6(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [DatabaseHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseHelper extends _i1.Mock implements _i5.DatabaseHelper {
+class MockDatabaseHelper extends _i1.Mock implements _i9.DatabaseHelper {
   MockDatabaseHelper() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i2.Database> get database =>
+  _i10.Future<_i2.Database> get database =>
       (super.noSuchMethod(
             Invocation.getter(#database),
-            returnValue: _i6.Future<_i2.Database>.value(
+            returnValue: _i10.Future<_i2.Database>.value(
               _FakeDatabase_0(this, Invocation.getter(#database)),
             ),
           )
-          as _i6.Future<_i2.Database>);
+          as _i10.Future<_i2.Database>);
 
   @override
-  _i6.Future<void> close() =>
+  _i10.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 }
 
 /// A class which mocks [NotesRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNotesRepository extends _i1.Mock implements _i7.NotesRepository {
+class MockNotesRepository extends _i1.Mock implements _i5.NotesRepository {
   MockNotesRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i3.Either<Exception, List<_i8.Note>>> getAllNotes() =>
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> getAllNotes() =>
       (super.noSuchMethod(
             Invocation.method(#getAllNotes, []),
             returnValue:
-                _i6.Future<_i3.Either<Exception, List<_i8.Note>>>.value(
-                  _FakeEither_1<Exception, List<_i8.Note>>(
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
                     this,
                     Invocation.method(#getAllNotes, []),
                   ),
                 ),
           )
-          as _i6.Future<_i3.Either<Exception, List<_i8.Note>>>);
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, _i8.Note>> getNoteById(String? id) =>
+  _i10.Future<_i3.Either<Exception, _i11.Note>> getNoteById(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#getNoteById, [id]),
-            returnValue: _i6.Future<_i3.Either<Exception, _i8.Note>>.value(
-              _FakeEither_1<Exception, _i8.Note>(
+            returnValue: _i10.Future<_i3.Either<Exception, _i11.Note>>.value(
+              _FakeEither_1<Exception, _i11.Note>(
                 this,
                 Invocation.method(#getNoteById, [id]),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, _i8.Note>>);
+          as _i10.Future<_i3.Either<Exception, _i11.Note>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, void>> createNote(_i8.Note? note) =>
+  _i10.Future<_i3.Either<Exception, void>> createNote(_i11.Note? note) =>
       (super.noSuchMethod(
             Invocation.method(#createNote, [note]),
-            returnValue: _i6.Future<_i3.Either<Exception, void>>.value(
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
               _FakeEither_1<Exception, void>(
                 this,
                 Invocation.method(#createNote, [note]),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, void>>);
+          as _i10.Future<_i3.Either<Exception, void>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, void>> updateNote(_i8.Note? note) =>
+  _i10.Future<_i3.Either<Exception, void>> updateNote(_i11.Note? note) =>
       (super.noSuchMethod(
             Invocation.method(#updateNote, [note]),
-            returnValue: _i6.Future<_i3.Either<Exception, void>>.value(
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
               _FakeEither_1<Exception, void>(
                 this,
                 Invocation.method(#updateNote, [note]),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, void>>);
+          as _i10.Future<_i3.Either<Exception, void>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, void>> deleteNote(String? id) =>
+  _i10.Future<_i3.Either<Exception, void>> deleteNote(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteNote, [id]),
-            returnValue: _i6.Future<_i3.Either<Exception, void>>.value(
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
               _FakeEither_1<Exception, void>(
                 this,
                 Invocation.method(#deleteNote, [id]),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, void>>);
+          as _i10.Future<_i3.Either<Exception, void>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, void>> toggleFavorite(String? id) =>
+  _i10.Future<_i3.Either<Exception, void>> toggleFavorite(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#toggleFavorite, [id]),
-            returnValue: _i6.Future<_i3.Either<Exception, void>>.value(
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
               _FakeEither_1<Exception, void>(
                 this,
                 Invocation.method(#toggleFavorite, [id]),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, void>>);
+          as _i10.Future<_i3.Either<Exception, void>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, List<_i8.Note>>> sortByImportance() =>
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> sortByImportance() =>
       (super.noSuchMethod(
             Invocation.method(#sortByImportance, []),
             returnValue:
-                _i6.Future<_i3.Either<Exception, List<_i8.Note>>>.value(
-                  _FakeEither_1<Exception, List<_i8.Note>>(
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
                     this,
                     Invocation.method(#sortByImportance, []),
                   ),
                 ),
           )
-          as _i6.Future<_i3.Either<Exception, List<_i8.Note>>>);
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 }
 
 /// A class which mocks [NotesLocalDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotesLocalDatasource extends _i1.Mock
-    implements _i9.NotesLocalDatasource {
+    implements _i12.NotesLocalDatasource {
   MockNotesLocalDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i4.NoteModel>> getAllNotes() =>
+  _i10.Future<List<_i4.NoteModel>> getAllNotes() =>
       (super.noSuchMethod(
             Invocation.method(#getAllNotes, []),
-            returnValue: _i6.Future<List<_i4.NoteModel>>.value(
+            returnValue: _i10.Future<List<_i4.NoteModel>>.value(
               <_i4.NoteModel>[],
             ),
           )
-          as _i6.Future<List<_i4.NoteModel>>);
+          as _i10.Future<List<_i4.NoteModel>>);
 
   @override
-  _i6.Future<_i4.NoteModel> getNoteById(String? id) =>
+  _i10.Future<_i4.NoteModel> getNoteById(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#getNoteById, [id]),
-            returnValue: _i6.Future<_i4.NoteModel>.value(
+            returnValue: _i10.Future<_i4.NoteModel>.value(
               _FakeNoteModel_2(this, Invocation.method(#getNoteById, [id])),
             ),
           )
-          as _i6.Future<_i4.NoteModel>);
+          as _i10.Future<_i4.NoteModel>);
 
   @override
-  _i6.Future<void> createNote(_i4.NoteModel? note) =>
+  _i10.Future<void> createNote(_i4.NoteModel? note) =>
       (super.noSuchMethod(
             Invocation.method(#createNote, [note]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<void> updateNote(_i4.NoteModel? note) =>
+  _i10.Future<void> updateNote(_i4.NoteModel? note) =>
       (super.noSuchMethod(
             Invocation.method(#updateNote, [note]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<void> deleteNote(String? id) =>
+  _i10.Future<void> deleteNote(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteNote, [id]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<void> toggleFavorite(String? id) =>
+  _i10.Future<void> toggleFavorite(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#toggleFavorite, [id]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<List<_i4.NoteModel>> sortByImportance() =>
+  _i10.Future<List<_i4.NoteModel>> sortByImportance() =>
       (super.noSuchMethod(
             Invocation.method(#sortByImportance, []),
-            returnValue: _i6.Future<List<_i4.NoteModel>>.value(
+            returnValue: _i10.Future<List<_i4.NoteModel>>.value(
               <_i4.NoteModel>[],
             ),
           )
-          as _i6.Future<List<_i4.NoteModel>>);
+          as _i10.Future<List<_i4.NoteModel>>);
 
   @override
-  _i6.Future<List<_i10.TodoModel>> getTodosForNote(String? noteId) =>
+  _i10.Future<List<_i13.TodoModel>> getTodosForNote(String? noteId) =>
       (super.noSuchMethod(
             Invocation.method(#getTodosForNote, [noteId]),
-            returnValue: _i6.Future<List<_i10.TodoModel>>.value(
-              <_i10.TodoModel>[],
+            returnValue: _i10.Future<List<_i13.TodoModel>>.value(
+              <_i13.TodoModel>[],
             ),
           )
-          as _i6.Future<List<_i10.TodoModel>>);
+          as _i10.Future<List<_i13.TodoModel>>);
 
   @override
-  _i6.Future<void> insertTodo(_i10.TodoModel? todo) =>
+  _i10.Future<void> insertTodo(_i13.TodoModel? todo) =>
       (super.noSuchMethod(
             Invocation.method(#insertTodo, [todo]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<void> updateTodo(_i10.TodoModel? todo) =>
+  _i10.Future<void> updateTodo(_i13.TodoModel? todo) =>
       (super.noSuchMethod(
             Invocation.method(#updateTodo, [todo]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<void> deleteTodo(String? todoId) =>
+  _i10.Future<void> deleteTodo(String? todoId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteTodo, [todoId]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
+}
+
+/// A class which mocks [GetAllNotes].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAllNotes extends _i1.Mock implements _i14.GetAllNotes {
+  MockGetAllNotes() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue:
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
+                    this,
+                    Invocation.method(#call, []),
+                  ),
+                ),
+          )
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
+}
+
+/// A class which mocks [GetNoteById].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetNoteById extends _i1.Mock implements _i15.GetNoteById {
+  MockGetNoteById() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, _i11.Note>> call(String? id) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [id]),
+            returnValue: _i10.Future<_i3.Either<Exception, _i11.Note>>.value(
+              _FakeEither_1<Exception, _i11.Note>(
+                this,
+                Invocation.method(#call, [id]),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, _i11.Note>>);
+}
+
+/// A class which mocks [CreateNote].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCreateNote extends _i1.Mock implements _i16.CreateNote {
+  MockCreateNote() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, void>> call(_i11.Note? note) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [note]),
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
+              _FakeEither_1<Exception, void>(
+                this,
+                Invocation.method(#call, [note]),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, void>>);
+}
+
+/// A class which mocks [UpdateNote].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUpdateNote extends _i1.Mock implements _i17.UpdateNote {
+  MockUpdateNote() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, void>> call(_i11.Note? note) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [note]),
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
+              _FakeEither_1<Exception, void>(
+                this,
+                Invocation.method(#call, [note]),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, void>>);
+}
+
+/// A class which mocks [DeleteNote].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteNote extends _i1.Mock implements _i18.DeleteNote {
+  MockDeleteNote() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, void>> call(String? id) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [id]),
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
+              _FakeEither_1<Exception, void>(
+                this,
+                Invocation.method(#call, [id]),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, void>>);
+}
+
+/// A class which mocks [ToggleFavorite].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockToggleFavorite extends _i1.Mock implements _i19.ToggleFavorite {
+  MockToggleFavorite() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, void>> call(String? id) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [id]),
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
+              _FakeEither_1<Exception, void>(
+                this,
+                Invocation.method(#call, [id]),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, void>>);
+}
+
+/// A class which mocks [SortNotesByImportance].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSortNotesByImportance extends _i1.Mock
+    implements _i20.SortNotesByImportance {
+  MockSortNotesByImportance() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NotesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeNotesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.NotesRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue:
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
+                    this,
+                    Invocation.method(#call, []),
+                  ),
+                ),
+          )
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
+}
+
+/// A class which mocks [ShareNote].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockShareNote extends _i1.Mock implements _i21.ShareNote {
+  MockShareNote() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i10.Future<void> call({required String? title, required String? content}) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [], {#title: title, #content: content}),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
+          )
+          as _i10.Future<void>);
 }
 
 /// A class which mocks [SearchRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSearchRepository extends _i1.Mock implements _i11.SearchRepository {
+class MockSearchRepository extends _i1.Mock implements _i6.SearchRepository {
   MockSearchRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i3.Either<Exception, List<_i8.Note>>> searchNotes(
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> searchNotes(
     String? query,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#searchNotes, [query]),
             returnValue:
-                _i6.Future<_i3.Either<Exception, List<_i8.Note>>>.value(
-                  _FakeEither_1<Exception, List<_i8.Note>>(
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
                     this,
                     Invocation.method(#searchNotes, [query]),
                   ),
                 ),
           )
-          as _i6.Future<_i3.Either<Exception, List<_i8.Note>>>);
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 }
 
 /// A class which mocks [SearchLocalDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSearchLocalDatasource extends _i1.Mock
-    implements _i12.SearchLocalDatasource {
+    implements _i22.SearchLocalDatasource {
   MockSearchLocalDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i4.NoteModel>> searchNotes(String? query) =>
+  _i10.Future<List<_i4.NoteModel>> searchNotes(String? query) =>
       (super.noSuchMethod(
             Invocation.method(#searchNotes, [query]),
-            returnValue: _i6.Future<List<_i4.NoteModel>>.value(
+            returnValue: _i10.Future<List<_i4.NoteModel>>.value(
               <_i4.NoteModel>[],
             ),
           )
-          as _i6.Future<List<_i4.NoteModel>>);
+          as _i10.Future<List<_i4.NoteModel>>);
+}
+
+/// A class which mocks [SearchNotes].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSearchNotes extends _i1.Mock implements _i23.SearchNotes {
+  MockSearchNotes() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.SearchRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeSearchRepository_4(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i6.SearchRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> call(String? query) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [query]),
+            returnValue:
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
+                    this,
+                    Invocation.method(#call, [query]),
+                  ),
+                ),
+          )
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 }
 
 /// A class which mocks [CalendarRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCalendarRepository extends _i1.Mock
-    implements _i13.CalendarRepository {
+    implements _i7.CalendarRepository {
   MockCalendarRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i3.Either<Exception, List<_i8.Note>>> getNotesByDate(
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> getNotesByDate(
     DateTime? date,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getNotesByDate, [date]),
             returnValue:
-                _i6.Future<_i3.Either<Exception, List<_i8.Note>>>.value(
-                  _FakeEither_1<Exception, List<_i8.Note>>(
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
                     this,
                     Invocation.method(#getNotesByDate, [date]),
                   ),
                 ),
           )
-          as _i6.Future<_i3.Either<Exception, List<_i8.Note>>>);
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, List<_i8.Note>>> getNotesByDateRange(
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> getNotesByDateRange(
     DateTime? start,
     DateTime? end,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getNotesByDateRange, [start, end]),
             returnValue:
-                _i6.Future<_i3.Either<Exception, List<_i8.Note>>>.value(
-                  _FakeEither_1<Exception, List<_i8.Note>>(
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
                     this,
                     Invocation.method(#getNotesByDateRange, [start, end]),
                   ),
                 ),
           )
-          as _i6.Future<_i3.Either<Exception, List<_i8.Note>>>);
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 }
 
 /// A class which mocks [CalendarLocalDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCalendarLocalDatasource extends _i1.Mock
-    implements _i14.CalendarLocalDatasource {
+    implements _i24.CalendarLocalDatasource {
   MockCalendarLocalDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i4.NoteModel>> getNotesByDate(DateTime? date) =>
+  _i10.Future<List<_i4.NoteModel>> getNotesByDate(DateTime? date) =>
       (super.noSuchMethod(
             Invocation.method(#getNotesByDate, [date]),
-            returnValue: _i6.Future<List<_i4.NoteModel>>.value(
+            returnValue: _i10.Future<List<_i4.NoteModel>>.value(
               <_i4.NoteModel>[],
             ),
           )
-          as _i6.Future<List<_i4.NoteModel>>);
+          as _i10.Future<List<_i4.NoteModel>>);
 
   @override
-  _i6.Future<List<_i4.NoteModel>> getNotesByDateRange(
+  _i10.Future<List<_i4.NoteModel>> getNotesByDateRange(
     DateTime? start,
     DateTime? end,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getNotesByDateRange, [start, end]),
-            returnValue: _i6.Future<List<_i4.NoteModel>>.value(
+            returnValue: _i10.Future<List<_i4.NoteModel>>.value(
               <_i4.NoteModel>[],
             ),
           )
-          as _i6.Future<List<_i4.NoteModel>>);
+          as _i10.Future<List<_i4.NoteModel>>);
+}
+
+/// A class which mocks [GetNotesByDate].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetNotesByDate extends _i1.Mock implements _i25.GetNotesByDate {
+  MockGetNotesByDate() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.CalendarRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeCalendarRepository_5(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i7.CalendarRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, List<_i11.Note>>> call(DateTime? date) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [date]),
+            returnValue:
+                _i10.Future<_i3.Either<Exception, List<_i11.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i11.Note>>(
+                    this,
+                    Invocation.method(#call, [date]),
+                  ),
+                ),
+          )
+          as _i10.Future<_i3.Either<Exception, List<_i11.Note>>>);
 }
 
 /// A class which mocks [SettingsRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSettingsRepository extends _i1.Mock
-    implements _i15.SettingsRepository {
+    implements _i8.SettingsRepository {
   MockSettingsRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i3.Either<Exception, _i16.AppSettings>> getSettings() =>
+  _i10.Future<_i3.Either<Exception, _i26.AppSettings>> getSettings() =>
       (super.noSuchMethod(
             Invocation.method(#getSettings, []),
             returnValue:
-                _i6.Future<_i3.Either<Exception, _i16.AppSettings>>.value(
-                  _FakeEither_1<Exception, _i16.AppSettings>(
+                _i10.Future<_i3.Either<Exception, _i26.AppSettings>>.value(
+                  _FakeEither_1<Exception, _i26.AppSettings>(
                     this,
                     Invocation.method(#getSettings, []),
                   ),
                 ),
           )
-          as _i6.Future<_i3.Either<Exception, _i16.AppSettings>>);
+          as _i10.Future<_i3.Either<Exception, _i26.AppSettings>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, void>> toggleTheme() =>
+  _i10.Future<_i3.Either<Exception, void>> toggleTheme() =>
       (super.noSuchMethod(
             Invocation.method(#toggleTheme, []),
-            returnValue: _i6.Future<_i3.Either<Exception, void>>.value(
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
               _FakeEither_1<Exception, void>(
                 this,
                 Invocation.method(#toggleTheme, []),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, void>>);
+          as _i10.Future<_i3.Either<Exception, void>>);
 
   @override
-  _i6.Future<_i3.Either<Exception, void>> changeFont(String? fontFamily) =>
+  _i10.Future<_i3.Either<Exception, void>> changeFont(String? fontFamily) =>
       (super.noSuchMethod(
             Invocation.method(#changeFont, [fontFamily]),
-            returnValue: _i6.Future<_i3.Either<Exception, void>>.value(
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
               _FakeEither_1<Exception, void>(
                 this,
                 Invocation.method(#changeFont, [fontFamily]),
               ),
             ),
           )
-          as _i6.Future<_i3.Either<Exception, void>>);
+          as _i10.Future<_i3.Either<Exception, void>>);
 }
 
 /// A class which mocks [SettingsLocalDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSettingsLocalDatasource extends _i1.Mock
-    implements _i17.SettingsLocalDatasource {
+    implements _i27.SettingsLocalDatasource {
   MockSettingsLocalDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<bool> getIsDarkMode() =>
+  _i10.Future<bool> getIsDarkMode() =>
       (super.noSuchMethod(
             Invocation.method(#getIsDarkMode, []),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i10.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i10.Future<bool>);
 
   @override
-  _i6.Future<void> setIsDarkMode(bool? value) =>
+  _i10.Future<void> setIsDarkMode(bool? value) =>
       (super.noSuchMethod(
             Invocation.method(#setIsDarkMode, [value]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
 
   @override
-  _i6.Future<String> getFontFamily() =>
+  _i10.Future<String> getFontFamily() =>
       (super.noSuchMethod(
             Invocation.method(#getFontFamily, []),
-            returnValue: _i6.Future<String>.value(
-              _i18.dummyValue<String>(
+            returnValue: _i10.Future<String>.value(
+              _i28.dummyValue<String>(
                 this,
                 Invocation.method(#getFontFamily, []),
               ),
             ),
           )
-          as _i6.Future<String>);
+          as _i10.Future<String>);
 
   @override
-  _i6.Future<void> setFontFamily(String? fontFamily) =>
+  _i10.Future<void> setFontFamily(String? fontFamily) =>
       (super.noSuchMethod(
             Invocation.method(#setFontFamily, [fontFamily]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i10.Future<void>.value(),
+            returnValueForMissingStub: _i10.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i10.Future<void>);
+}
+
+/// A class which mocks [ToggleTheme].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockToggleTheme extends _i1.Mock implements _i29.ToggleTheme {
+  MockToggleTheme() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.SettingsRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeSettingsRepository_6(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i8.SettingsRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, void>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
+              _FakeEither_1<Exception, void>(
+                this,
+                Invocation.method(#call, []),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, void>>);
+}
+
+/// A class which mocks [ChangeFont].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockChangeFont extends _i1.Mock implements _i30.ChangeFont {
+  MockChangeFont() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.SettingsRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeSettingsRepository_6(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i8.SettingsRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, void>> call(String? fontFamily) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [fontFamily]),
+            returnValue: _i10.Future<_i3.Either<Exception, void>>.value(
+              _FakeEither_1<Exception, void>(
+                this,
+                Invocation.method(#call, [fontFamily]),
+              ),
+            ),
+          )
+          as _i10.Future<_i3.Either<Exception, void>>);
 }
