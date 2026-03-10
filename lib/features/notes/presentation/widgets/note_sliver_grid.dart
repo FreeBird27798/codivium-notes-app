@@ -10,53 +10,92 @@ class NoteSliverGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leftColumn = <Note>[];
-    final rightColumn = <Note>[];
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      sliver: _MasonrySliverList(
+        notes: notes,
+        onNoteTap: onNoteTap,
+      ),
+    );
+  }
+}
 
-    for (int i = 0; i < notes.length; i++) {
-      if (i.isEven) {
-        leftColumn.add(notes[i]);
+class _MasonrySliverList extends StatelessWidget {
+  final List<Note> notes;
+  final void Function(Note note)? onNoteTap;
+
+  const _MasonrySliverList({required this.notes, this.onNoteTap});
+
+  @override
+  Widget build(BuildContext context) {
+    if (notes.isEmpty) {
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
+
+    final leftNotes = <Note>[];
+    final rightNotes = <Note>[];
+    double leftHeight = 0;
+    double rightHeight = 0;
+
+    for (final note in notes) {
+      final estimatedHeight = _estimateCardHeight(note);
+      if (leftHeight <= rightHeight) {
+        leftNotes.add(note);
+        leftHeight += estimatedHeight + 12;
       } else {
-        rightColumn.add(notes[i]);
+        rightNotes.add(note);
+        rightHeight += estimatedHeight + 12;
       }
     }
 
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      sliver: SliverToBoxAdapter(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                children: leftColumn.map((note) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: NoteCard(
-                      note: note,
-                      onTap: () => onNoteTap?.call(note),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                children: rightColumn.map((note) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: NoteCard(
-                      note: note,
-                      onTap: () => onNoteTap?.call(note),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        ),
+    return SliverToBoxAdapter(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: _buildColumn(leftNotes)),
+          const SizedBox(width: 12),
+          Expanded(child: _buildColumn(rightNotes)),
+        ],
       ),
     );
+  }
+
+  Widget _buildColumn(List<Note> columnNotes) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: columnNotes.map((note) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: NoteCard(
+            note: note,
+            onTap: () => onNoteTap?.call(note),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  double _estimateCardHeight(Note note) {
+    const padding = 28.0;
+    const titleLineHeight = 20.0;
+    const spacing = 8.0;
+    const contentLineHeight = 19.2;
+    const avgCharsPerLine = 28;
+
+    double height = padding;
+
+    final titleLines = (note.title.length / avgCharsPerLine).ceil().clamp(1, 2);
+    height += titleLines * titleLineHeight;
+
+    if (note.content.isNotEmpty) {
+      height += spacing;
+      final contentLines =
+          (note.content.length / avgCharsPerLine).ceil().clamp(1, 20);
+      final newLineCount = '\n'.allMatches(note.content).length;
+      final totalLines = (contentLines + newLineCount).clamp(1, 20);
+      height += totalLines * contentLineHeight;
+    }
+
+    return height;
   }
 }
