@@ -168,9 +168,9 @@ class _NotesListScreenState extends State<NotesListScreen> {
             );
           }
           if (state is NoteShared) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Note shared')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Note shared')));
           }
         },
         child: Scaffold(
@@ -284,9 +284,7 @@ class _NotesListScreenState extends State<NotesListScreen> {
                           onNoteLongPress: (note) => _confirmDelete(note),
                         );
                       }
-                      return const SliverToBoxAdapter(
-                        child: SizedBox.shrink(),
-                      );
+                      return const SliverToBoxAdapter(child: SizedBox.shrink());
                     },
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 80)),

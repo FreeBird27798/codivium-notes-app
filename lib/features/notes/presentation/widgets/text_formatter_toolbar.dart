@@ -55,9 +55,7 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
     if (start == end) {
       final newText = '$prefix$suffix';
       _ctrl.text = text.substring(0, start) + newText + text.substring(end);
-      _ctrl.selection = TextSelection.collapsed(
-        offset: start + prefix.length,
-      );
+      _ctrl.selection = TextSelection.collapsed(offset: start + prefix.length);
     } else {
       final selected = text.substring(start, end);
       if (selected.startsWith(prefix) && selected.endsWith(suffix)) {
@@ -118,7 +116,10 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
 
     _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
 
-    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    final newCursor = (sel.start + cursorShift).clamp(
+      start,
+      start + newLine.length,
+    );
     _ctrl.selection = TextSelection.collapsed(offset: newCursor);
   }
 
@@ -160,7 +161,10 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
 
     _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
 
-    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    final newCursor = (sel.start + cursorShift).clamp(
+      start,
+      start + newLine.length,
+    );
     _ctrl.selection = TextSelection.collapsed(offset: newCursor);
   }
 
@@ -196,7 +200,10 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
 
     _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
 
-    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    final newCursor = (sel.start + cursorShift).clamp(
+      start,
+      start + newLine.length,
+    );
     _ctrl.selection = TextSelection.collapsed(offset: newCursor);
   }
 
@@ -225,7 +232,10 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
 
     _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
 
-    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    final newCursor = (sel.start + cursorShift).clamp(
+      start,
+      start + newLine.length,
+    );
     _ctrl.selection = TextSelection.collapsed(offset: newCursor);
   }
 

@@ -166,10 +166,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                 const SizedBox(height: 16),
                 const Text(
                   'Pick a color',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 16),
                 Wrap(
@@ -238,13 +235,15 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                 const SizedBox(height: 16),
                 const Text(
                   'Set importance',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 12),
-                _buildImportanceOption(ctx, 1, 'Low', Icons.remove_circle_outline),
+                _buildImportanceOption(
+                  ctx,
+                  1,
+                  'Low',
+                  Icons.remove_circle_outline,
+                ),
                 _buildImportanceOption(ctx, 2, 'Medium', Icons.circle_outlined),
                 _buildImportanceOption(ctx, 3, 'High', Icons.error_outline),
                 const SizedBox(height: 8),
@@ -303,9 +302,9 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             );
           }
           if (state is NoteShared) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Note shared')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Note shared')));
           }
         },
         child: Scaffold(
@@ -347,9 +346,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  child: TextFormatterToolbar(
-                    controller: _contentController,
-                  ),
+                  child: TextFormatterToolbar(controller: _contentController),
                 ),
               ],
             ),
@@ -430,8 +427,8 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   _importance >= 3
                       ? Icons.error_outline
                       : _importance >= 2
-                          ? Icons.circle_outlined
-                          : Icons.remove_circle_outline,
+                      ? Icons.circle_outlined
+                      : Icons.remove_circle_outline,
                   size: 14,
                   color: Colors.black54,
                 ),
@@ -441,7 +438,11 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   style: const TextStyle(fontSize: 12, color: Colors.black54),
                 ),
                 const SizedBox(width: 2),
-                const Icon(Icons.arrow_drop_down, size: 16, color: Colors.black54),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: Colors.black54,
+                ),
               ],
             ),
           ),

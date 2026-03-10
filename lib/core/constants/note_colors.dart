@@ -53,4 +53,3 @@ class NoteColors {
         : Colors.white.withValues(alpha: 0.7);
   }
 }
-

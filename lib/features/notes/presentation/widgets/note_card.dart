@@ -7,12 +7,7 @@ class NoteCard extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
-  const NoteCard({
-    super.key,
-    required this.note,
-    this.onTap,
-    this.onLongPress,
-  });
+  const NoteCard({super.key, required this.note, this.onTap, this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +72,13 @@ class NoteCard extends StatelessWidget {
 
   Widget _buildContent(Color contentColor) {
     final lines = note.content.split('\n');
-    final hasNumberedList = lines.length > 1 &&
+    final hasNumberedList =
+        lines.length > 1 &&
         lines.any((line) => RegExp(r'^\d+\.').hasMatch(line.trim()));
-    final hasBulletList = lines.length > 1 &&
+    final hasBulletList =
+        lines.length > 1 &&
         lines.any(
-          (line) =>
-              line.trim().startsWith('•') || line.trim().startsWith('-'),
+          (line) => line.trim().startsWith('•') || line.trim().startsWith('-'),
         );
 
     if (hasNumberedList || hasBulletList) {

@@ -72,21 +72,17 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
         center: _centerKey,
         slivers: [
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final date = _anchorDate.subtract(Duration(days: index + 1));
-                return _buildDay(date);
-              },
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final date = _anchorDate.subtract(Duration(days: index + 1));
+              return _buildDay(date);
+            }),
           ),
           SliverList(
             key: _centerKey,
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final date = _anchorDate.add(Duration(days: index));
-                return _buildDay(date);
-              },
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final date = _anchorDate.add(Duration(days: index));
+              return _buildDay(date);
+            }),
           ),
         ],
       ),
@@ -95,7 +91,8 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
 
   Widget _buildDay(DateTime date) {
     final selected = _stripTime(widget.selectedDate);
-    final isSelected = date.year == selected.year &&
+    final isSelected =
+        date.year == selected.year &&
         date.month == selected.month &&
         date.day == selected.day;
 
@@ -109,4 +106,3 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
     );
   }
 }
-

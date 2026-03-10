@@ -102,8 +102,10 @@ class _MasonrySliverList extends StatelessWidget {
 
     if (note.content.isNotEmpty) {
       height += spacing;
-      final contentLines =
-          (note.content.length / avgCharsPerLine).ceil().clamp(1, 20);
+      final contentLines = (note.content.length / avgCharsPerLine).ceil().clamp(
+        1,
+        20,
+      );
       final newLineCount = '\n'.allMatches(note.content).length;
       final totalLines = (contentLines + newLineCount).clamp(1, 20);
       height += totalLines * contentLineHeight;

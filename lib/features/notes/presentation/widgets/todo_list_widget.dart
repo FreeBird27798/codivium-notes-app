@@ -156,10 +156,7 @@ class _TodoListWidgetState extends State<TodoListWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildHeader(),
-        if (_todos.isNotEmpty) _buildList(),
-      ],
+      children: [_buildHeader(), if (_todos.isNotEmpty) _buildList()],
     );
   }
 
@@ -214,7 +211,10 @@ class _TodoListWidgetState extends State<TodoListWidget> {
         return AnimatedBuilder(
           listenable: animation,
           builder: (context, child) {
-            final scale = Tween<double>(begin: 1.0, end: 1.03).evaluate(animation);
+            final scale = Tween<double>(
+              begin: 1.0,
+              end: 1.03,
+            ).evaluate(animation);
             return Transform.scale(
               scale: scale,
               child: Material(
@@ -301,11 +301,7 @@ class _TodoListWidgetState extends State<TodoListWidget> {
             onTap: () => _removeTodo(index),
             child: Padding(
               padding: const EdgeInsets.all(4),
-              child: Icon(
-                Icons.close,
-                size: 16,
-                color: Colors.grey.shade400,
-              ),
+              child: Icon(Icons.close, size: 16, color: Colors.grey.shade400),
             ),
           ),
         ],

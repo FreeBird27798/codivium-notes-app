@@ -5,8 +5,7 @@ typedef ShareFunction = Future<void> Function(String text);
 class ShareNote {
   final ShareFunction _share;
 
-  ShareNote({ShareFunction? share})
-      : _share = share ?? _defaultShare;
+  ShareNote({ShareFunction? share}) : _share = share ?? _defaultShare;
 
   static Future<void> _defaultShare(String text) async {
     await Share.share(text);
