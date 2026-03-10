@@ -23,6 +23,7 @@ import 'package:codivium_notes_app/features/calendar/data/datasources/calendar_l
 import 'package:codivium_notes_app/features/calendar/data/repositories/calendar_repository_impl.dart';
 import 'package:codivium_notes_app/features/calendar/domain/repositories/calendar_repository.dart';
 import 'package:codivium_notes_app/features/calendar/domain/usecases/get_notes_by_date.dart';
+import 'package:codivium_notes_app/features/calendar/domain/usecases/get_notes_by_date_range.dart';
 import 'package:codivium_notes_app/features/calendar/presentation/bloc/calendar_bloc.dart';
 import 'package:codivium_notes_app/features/settings/data/datasources/settings_local_datasource.dart';
 import 'package:codivium_notes_app/features/settings/data/repositories/settings_repository_impl.dart';
@@ -105,8 +106,11 @@ void _initCalendar() {
   );
 
   sl.registerLazySingleton(() => GetNotesByDate(sl()));
+  sl.registerLazySingleton(() => GetNotesByDateRange(sl()));
 
-  sl.registerFactory(() => CalendarBloc(getNotesByDate: sl()));
+  sl.registerFactory(
+    () => CalendarBloc(getNotesByDate: sl(), getNotesByDateRange: sl()),
+  );
 }
 
 void _initSettings() {

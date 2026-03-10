@@ -13,6 +13,8 @@ import 'package:codivium_notes_app/features/calendar/domain/repositories/calenda
     as _i7;
 import 'package:codivium_notes_app/features/calendar/domain/usecases/get_notes_by_date.dart'
     as _i26;
+import 'package:codivium_notes_app/features/calendar/domain/usecases/get_notes_by_date_range.dart'
+    as _i27;
 import 'package:codivium_notes_app/features/notes/data/datasources/notes_local_datasource.dart'
     as _i13;
 import 'package:codivium_notes_app/features/notes/data/models/note_model.dart'
@@ -46,18 +48,18 @@ import 'package:codivium_notes_app/features/search/domain/repositories/search_re
 import 'package:codivium_notes_app/features/search/domain/usecases/search_notes.dart'
     as _i24;
 import 'package:codivium_notes_app/features/settings/data/datasources/settings_local_datasource.dart'
-    as _i28;
+    as _i29;
 import 'package:codivium_notes_app/features/settings/domain/entities/app_settings.dart'
-    as _i27;
+    as _i28;
 import 'package:codivium_notes_app/features/settings/domain/repositories/settings_repository.dart'
     as _i8;
 import 'package:codivium_notes_app/features/settings/domain/usecases/change_font.dart'
-    as _i31;
+    as _i32;
 import 'package:codivium_notes_app/features/settings/domain/usecases/toggle_theme.dart'
-    as _i30;
+    as _i31;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i29;
+import 'package:mockito/src/dummies.dart' as _i30;
 import 'package:sqflite/sqflite.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -814,6 +816,44 @@ class MockGetNotesByDate extends _i1.Mock implements _i26.GetNotesByDate {
           as _i10.Future<_i3.Either<Exception, List<_i12.Note>>>);
 }
 
+/// A class which mocks [GetNotesByDateRange].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetNotesByDateRange extends _i1.Mock
+    implements _i27.GetNotesByDateRange {
+  MockGetNotesByDateRange() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.CalendarRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeCalendarRepository_5(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i7.CalendarRepository);
+
+  @override
+  _i10.Future<_i3.Either<Exception, List<_i12.Note>>> call(
+    DateTime? start,
+    DateTime? end,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [start, end]),
+            returnValue:
+                _i10.Future<_i3.Either<Exception, List<_i12.Note>>>.value(
+                  _FakeEither_1<Exception, List<_i12.Note>>(
+                    this,
+                    Invocation.method(#call, [start, end]),
+                  ),
+                ),
+          )
+          as _i10.Future<_i3.Either<Exception, List<_i12.Note>>>);
+}
+
 /// A class which mocks [SettingsRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -824,18 +864,18 @@ class MockSettingsRepository extends _i1.Mock
   }
 
   @override
-  _i10.Future<_i3.Either<Exception, _i27.AppSettings>> getSettings() =>
+  _i10.Future<_i3.Either<Exception, _i28.AppSettings>> getSettings() =>
       (super.noSuchMethod(
             Invocation.method(#getSettings, []),
             returnValue:
-                _i10.Future<_i3.Either<Exception, _i27.AppSettings>>.value(
-                  _FakeEither_1<Exception, _i27.AppSettings>(
+                _i10.Future<_i3.Either<Exception, _i28.AppSettings>>.value(
+                  _FakeEither_1<Exception, _i28.AppSettings>(
                     this,
                     Invocation.method(#getSettings, []),
                   ),
                 ),
           )
-          as _i10.Future<_i3.Either<Exception, _i27.AppSettings>>);
+          as _i10.Future<_i3.Either<Exception, _i28.AppSettings>>);
 
   @override
   _i10.Future<_i3.Either<Exception, void>> toggleTheme() =>
@@ -868,7 +908,7 @@ class MockSettingsRepository extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSettingsLocalDatasource extends _i1.Mock
-    implements _i28.SettingsLocalDatasource {
+    implements _i29.SettingsLocalDatasource {
   MockSettingsLocalDatasource() {
     _i1.throwOnMissingStub(this);
   }
@@ -895,7 +935,7 @@ class MockSettingsLocalDatasource extends _i1.Mock
       (super.noSuchMethod(
             Invocation.method(#getFontFamily, []),
             returnValue: _i10.Future<String>.value(
-              _i29.dummyValue<String>(
+              _i30.dummyValue<String>(
                 this,
                 Invocation.method(#getFontFamily, []),
               ),
@@ -916,7 +956,7 @@ class MockSettingsLocalDatasource extends _i1.Mock
 /// A class which mocks [ToggleTheme].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockToggleTheme extends _i1.Mock implements _i30.ToggleTheme {
+class MockToggleTheme extends _i1.Mock implements _i31.ToggleTheme {
   MockToggleTheme() {
     _i1.throwOnMissingStub(this);
   }
@@ -949,7 +989,7 @@ class MockToggleTheme extends _i1.Mock implements _i30.ToggleTheme {
 /// A class which mocks [ChangeFont].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockChangeFont extends _i1.Mock implements _i31.ChangeFont {
+class MockChangeFont extends _i1.Mock implements _i32.ChangeFont {
   MockChangeFont() {
     _i1.throwOnMissingStub(this);
   }
