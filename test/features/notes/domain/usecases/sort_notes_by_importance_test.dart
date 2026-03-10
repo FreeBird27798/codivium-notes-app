@@ -39,6 +39,7 @@ void main() {
 
       expect(result, isA<Left>());
       verify(mockRepository.sortByImportance()).called(1);
+      verifyNoMoreInteractions(mockRepository);
     });
   });
 }

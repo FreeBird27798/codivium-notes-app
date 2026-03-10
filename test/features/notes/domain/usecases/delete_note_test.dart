@@ -35,6 +35,7 @@ void main() {
 
       expect(result, isA<Left>());
       verify(mockRepository.deleteNote('note_1')).called(1);
+      verifyNoMoreInteractions(mockRepository);
     });
   });
 }

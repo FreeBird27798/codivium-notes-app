@@ -36,6 +36,7 @@ void main() {
 
       expect(result, isA<Left>());
       verify(mockRepository.getNoteById('bad_id')).called(1);
+      verifyNoMoreInteractions(mockRepository);
     });
   });
 }

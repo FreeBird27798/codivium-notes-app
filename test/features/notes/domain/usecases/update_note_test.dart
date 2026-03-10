@@ -36,6 +36,7 @@ void main() {
 
       expect(result, isA<Left>());
       verify(mockRepository.updateNote(updatedNote)).called(1);
+      verifyNoMoreInteractions(mockRepository);
     });
   });
 }

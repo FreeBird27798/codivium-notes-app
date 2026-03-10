@@ -59,6 +59,10 @@ void main() {
         },
         act: (bloc) => bloc.add(LoadNotes()),
         expect: () => [NotesLoading(), NotesLoaded(testNotes)],
+        verify: (_) {
+          verify(mockGetAllNotes()).called(1);
+          verifyNoMoreInteractions(mockGetAllNotes);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -71,6 +75,9 @@ void main() {
         },
         act: (bloc) => bloc.add(LoadNotes()),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockGetAllNotes()).called(1);
+        },
       );
     });
 
@@ -85,6 +92,10 @@ void main() {
         },
         act: (bloc) => bloc.add(const LoadNoteById('note_1')),
         expect: () => [NotesLoading(), NoteDetailLoaded(testNote)],
+        verify: (_) {
+          verify(mockGetNoteById('note_1')).called(1);
+          verifyNoMoreInteractions(mockGetNoteById);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -97,6 +108,9 @@ void main() {
         },
         act: (bloc) => bloc.add(const LoadNoteById('bad')),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockGetNoteById('bad')).called(1);
+        },
       );
     });
 
@@ -112,10 +126,14 @@ void main() {
         },
         act: (bloc) => bloc.add(AddNote(testNote)),
         expect: () => [NotesLoading(), NotesLoaded(testNotes)],
+        verify: (_) {
+          verify(mockCreateNote(testNote)).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
-        'emits [NotesLoading, NotesError] when fails',
+        'emits [NotesLoading, NotesError] when create fails',
         build: () {
           when(
             mockCreateNote(testNote),
@@ -124,6 +142,29 @@ void main() {
         },
         act: (bloc) => bloc.add(AddNote(testNote)),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockCreateNote(testNote)).called(1);
+          verifyNever(mockGetAllNotes());
+        },
+      );
+
+      blocTest<NotesBloc, NotesState>(
+        'emits [NotesLoading, NotesError] when create succeeds but refresh fails',
+        build: () {
+          when(
+            mockCreateNote(testNote),
+          ).thenAnswer((_) async => const Right(null));
+          when(
+            mockGetAllNotes(),
+          ).thenAnswer((_) async => Left(Exception('refresh error')));
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(AddNote(testNote)),
+        expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockCreateNote(testNote)).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
     });
 
@@ -139,10 +180,14 @@ void main() {
         },
         act: (bloc) => bloc.add(EditNote(updatedNote)),
         expect: () => [NotesLoading(), NotesLoaded(testNotes)],
+        verify: (_) {
+          verify(mockUpdateNote(updatedNote)).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
-        'emits [NotesLoading, NotesError] when fails',
+        'emits [NotesLoading, NotesError] when update fails',
         build: () {
           when(
             mockUpdateNote(updatedNote),
@@ -151,6 +196,29 @@ void main() {
         },
         act: (bloc) => bloc.add(EditNote(updatedNote)),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockUpdateNote(updatedNote)).called(1);
+          verifyNever(mockGetAllNotes());
+        },
+      );
+
+      blocTest<NotesBloc, NotesState>(
+        'emits [NotesLoading, NotesError] when update succeeds but refresh fails',
+        build: () {
+          when(
+            mockUpdateNote(updatedNote),
+          ).thenAnswer((_) async => const Right(null));
+          when(
+            mockGetAllNotes(),
+          ).thenAnswer((_) async => Left(Exception('refresh error')));
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(EditNote(updatedNote)),
+        expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockUpdateNote(updatedNote)).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
     });
 
@@ -166,10 +234,14 @@ void main() {
         },
         act: (bloc) => bloc.add(const RemoveNote('note_1')),
         expect: () => [NotesLoading(), const NotesLoaded([])],
+        verify: (_) {
+          verify(mockDeleteNote('note_1')).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
-        'emits [NotesLoading, NotesError] when fails',
+        'emits [NotesLoading, NotesError] when delete fails',
         build: () {
           when(
             mockDeleteNote('note_1'),
@@ -178,6 +250,29 @@ void main() {
         },
         act: (bloc) => bloc.add(const RemoveNote('note_1')),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockDeleteNote('note_1')).called(1);
+          verifyNever(mockGetAllNotes());
+        },
+      );
+
+      blocTest<NotesBloc, NotesState>(
+        'emits [NotesLoading, NotesError] when delete succeeds but refresh fails',
+        build: () {
+          when(
+            mockDeleteNote('note_1'),
+          ).thenAnswer((_) async => const Right(null));
+          when(
+            mockGetAllNotes(),
+          ).thenAnswer((_) async => Left(Exception('refresh error')));
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const RemoveNote('note_1')),
+        expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockDeleteNote('note_1')).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
     });
 
@@ -193,10 +288,14 @@ void main() {
         },
         act: (bloc) => bloc.add(const ToggleNoteFavorite('note_1')),
         expect: () => [NotesLoading(), NotesLoaded(testNotes)],
+        verify: (_) {
+          verify(mockToggleFavorite('note_1')).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
-        'emits [NotesLoading, NotesError] when fails',
+        'emits [NotesLoading, NotesError] when toggle fails',
         build: () {
           when(
             mockToggleFavorite('note_1'),
@@ -205,6 +304,29 @@ void main() {
         },
         act: (bloc) => bloc.add(const ToggleNoteFavorite('note_1')),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockToggleFavorite('note_1')).called(1);
+          verifyNever(mockGetAllNotes());
+        },
+      );
+
+      blocTest<NotesBloc, NotesState>(
+        'emits [NotesLoading, NotesError] when toggle succeeds but refresh fails',
+        build: () {
+          when(
+            mockToggleFavorite('note_1'),
+          ).thenAnswer((_) async => const Right(null));
+          when(
+            mockGetAllNotes(),
+          ).thenAnswer((_) async => Left(Exception('refresh error')));
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const ToggleNoteFavorite('note_1')),
+        expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockToggleFavorite('note_1')).called(1);
+          verify(mockGetAllNotes()).called(1);
+        },
       );
     });
 
@@ -219,6 +341,10 @@ void main() {
         },
         act: (bloc) => bloc.add(SortByImportance()),
         expect: () => [NotesLoading(), NotesLoaded(sortedNotes)],
+        verify: (_) {
+          verify(mockSortNotesByImportance()).called(1);
+          verifyNoMoreInteractions(mockSortNotesByImportance);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -231,6 +357,9 @@ void main() {
         },
         act: (bloc) => bloc.add(SortByImportance()),
         expect: () => [NotesLoading(), isA<NotesError>()],
+        verify: (_) {
+          verify(mockSortNotesByImportance()).called(1);
+        },
       );
     });
 
@@ -248,6 +377,10 @@ void main() {
         },
         act: (bloc) => bloc.add(const ShareNoteEvent('note_1')),
         expect: () => [isA<NoteShared>()],
+        verify: (_) {
+          verify(mockGetNoteById('note_1')).called(1);
+          verify(mockShareNote(title: 'Test', content: 'Content')).called(1);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -260,6 +393,15 @@ void main() {
         },
         act: (bloc) => bloc.add(const ShareNoteEvent('bad')),
         expect: () => [isA<NotesError>()],
+        verify: (_) {
+          verify(mockGetNoteById('bad')).called(1);
+          verifyNever(
+            mockShareNote(
+              title: anyNamed('title'),
+              content: anyNamed('content'),
+            ),
+          );
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -275,6 +417,9 @@ void main() {
         },
         act: (bloc) => bloc.add(const ShareNoteEvent('note_1')),
         expect: () => [isA<NotesError>()],
+        verify: (_) {
+          verify(mockGetNoteById('note_1')).called(1);
+        },
       );
     });
 
@@ -292,6 +437,10 @@ void main() {
         },
         act: (bloc) => bloc.add(const CopyNoteToClipboard('note_1')),
         expect: () => [isA<NoteCopied>()],
+        verify: (_) {
+          verify(mockGetNoteById('note_1')).called(1);
+          verify(mockClipboardHelper.copy('Test\n\nContent')).called(1);
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -304,6 +453,10 @@ void main() {
         },
         act: (bloc) => bloc.add(const CopyNoteToClipboard('bad')),
         expect: () => [isA<NotesError>()],
+        verify: (_) {
+          verify(mockGetNoteById('bad')).called(1);
+          verifyNever(mockClipboardHelper.copy(any));
+        },
       );
 
       blocTest<NotesBloc, NotesState>(
@@ -319,6 +472,10 @@ void main() {
         },
         act: (bloc) => bloc.add(const CopyNoteToClipboard('note_1')),
         expect: () => [isA<NotesError>()],
+        verify: (_) {
+          verify(mockGetNoteById('note_1')).called(1);
+          verify(mockClipboardHelper.copy('Test\n\nContent')).called(1);
+        },
       );
     });
   });
