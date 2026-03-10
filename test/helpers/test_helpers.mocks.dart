@@ -150,13 +150,12 @@ class MockClipboardHelper extends _i1.Mock implements _i11.ClipboardHelper {
   }
 
   @override
-  _i10.Future<void> copy(String? text) =>
+  _i10.Future<bool> copy(String? text) =>
       (super.noSuchMethod(
             Invocation.method(#copy, [text]),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i10.Future<bool>.value(false),
           )
-          as _i10.Future<void>);
+          as _i10.Future<bool>);
 }
 
 /// A class which mocks [NotesRepository].

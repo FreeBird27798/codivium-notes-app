@@ -111,7 +111,7 @@ void _initCalendar() {
 
 void _initSettings() {
   sl.registerLazySingleton<SettingsLocalDatasource>(
-    () => SettingsLocalDatasourceImpl(sharedPreferences: sl()),
+    () => SettingsLocalDatasourceImpl(databaseHelper: sl()),
   );
 
   sl.registerLazySingleton<SettingsRepository>(
