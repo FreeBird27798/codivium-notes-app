@@ -5,8 +5,14 @@ import 'package:codivium_notes_app/features/notes/presentation/widgets/note_card
 class NoteSliverGrid extends StatelessWidget {
   final List<Note> notes;
   final void Function(Note note)? onNoteTap;
+  final void Function(Note note)? onNoteLongPress;
 
-  const NoteSliverGrid({super.key, required this.notes, this.onNoteTap});
+  const NoteSliverGrid({
+    super.key,
+    required this.notes,
+    this.onNoteTap,
+    this.onNoteLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +21,7 @@ class NoteSliverGrid extends StatelessWidget {
       sliver: _MasonrySliverList(
         notes: notes,
         onNoteTap: onNoteTap,
+        onNoteLongPress: onNoteLongPress,
       ),
     );
   }
@@ -23,8 +30,13 @@ class NoteSliverGrid extends StatelessWidget {
 class _MasonrySliverList extends StatelessWidget {
   final List<Note> notes;
   final void Function(Note note)? onNoteTap;
+  final void Function(Note note)? onNoteLongPress;
 
-  const _MasonrySliverList({required this.notes, this.onNoteTap});
+  const _MasonrySliverList({
+    required this.notes,
+    this.onNoteTap,
+    this.onNoteLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +81,7 @@ class _MasonrySliverList extends StatelessWidget {
           child: NoteCard(
             note: note,
             onTap: () => onNoteTap?.call(note),
+            onLongPress: () => onNoteLongPress?.call(note),
           ),
         );
       }).toList(),
