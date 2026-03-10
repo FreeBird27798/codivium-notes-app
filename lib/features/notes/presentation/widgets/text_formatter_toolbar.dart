@@ -41,6 +41,194 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
     super.dispose();
   }
 
+  TextEditingController get _ctrl => widget.controller;
+
+  void _wrapSelection(String prefix, String suffix) {
+    final text = _ctrl.text;
+    final sel = _ctrl.selection;
+
+    if (!sel.isValid) return;
+
+    final start = sel.start;
+    final end = sel.end;
+
+    if (start == end) {
+      final newText = '$prefix$suffix';
+      _ctrl.text = text.substring(0, start) + newText + text.substring(end);
+      _ctrl.selection = TextSelection.collapsed(
+        offset: start + prefix.length,
+      );
+    } else {
+      final selected = text.substring(start, end);
+      if (selected.startsWith(prefix) && selected.endsWith(suffix)) {
+        final unwrapped = selected.substring(
+          prefix.length,
+          selected.length - suffix.length,
+        );
+        _ctrl.text = text.substring(0, start) + unwrapped + text.substring(end);
+        _ctrl.selection = TextSelection(
+          baseOffset: start,
+          extentOffset: start + unwrapped.length,
+        );
+      } else {
+        final wrapped = '$prefix$selected$suffix';
+        _ctrl.text = text.substring(0, start) + wrapped + text.substring(end);
+        _ctrl.selection = TextSelection(
+          baseOffset: start,
+          extentOffset: start + wrapped.length,
+        );
+      }
+    }
+  }
+
+  void _onBold() => _wrapSelection('**', '**');
+
+  void _onItalic() => _wrapSelection('*', '*');
+
+  void _onUnderline() => _wrapSelection('__', '__');
+
+  void _onHeading() {
+    final text = _ctrl.text;
+    final sel = _ctrl.selection;
+    if (!sel.isValid) return;
+
+    final lineStart = text.lastIndexOf('\n', sel.start > 0 ? sel.start - 1 : 0);
+    final start = lineStart == -1 ? 0 : lineStart + 1;
+
+    final lineEndIndex = text.indexOf('\n', sel.start);
+    final lineEnd = lineEndIndex == -1 ? text.length : lineEndIndex;
+    final line = text.substring(start, lineEnd);
+
+    String newLine;
+    int cursorShift;
+
+    if (line.startsWith('### ')) {
+      newLine = line.substring(4);
+      cursorShift = -4;
+    } else if (line.startsWith('## ')) {
+      newLine = '### ${line.substring(3)}';
+      cursorShift = 1;
+    } else if (line.startsWith('# ')) {
+      newLine = '## ${line.substring(2)}';
+      cursorShift = 1;
+    } else {
+      newLine = '# $line';
+      cursorShift = 2;
+    }
+
+    _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
+
+    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    _ctrl.selection = TextSelection.collapsed(offset: newCursor);
+  }
+
+  void _onNumberedList() {
+    final text = _ctrl.text;
+    final sel = _ctrl.selection;
+    if (!sel.isValid) return;
+
+    final lineStart = text.lastIndexOf('\n', sel.start > 0 ? sel.start - 1 : 0);
+    final start = lineStart == -1 ? 0 : lineStart + 1;
+
+    final lineEndIndex = text.indexOf('\n', sel.start);
+    final lineEnd = lineEndIndex == -1 ? text.length : lineEndIndex;
+    final line = text.substring(start, lineEnd);
+
+    final numberedMatch = RegExp(r'^(\d+)\.\s').firstMatch(line);
+
+    String newLine;
+    int cursorShift;
+
+    if (numberedMatch != null) {
+      newLine = line.substring(numberedMatch.end);
+      cursorShift = -(numberedMatch.end);
+    } else {
+      int number = 1;
+      if (start > 0) {
+        final prevLineStart = text.lastIndexOf('\n', start - 2);
+        final prevStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
+        final prevLine = text.substring(prevStart, start - 1);
+        final prevMatch = RegExp(r'^(\d+)\.\s').firstMatch(prevLine);
+        if (prevMatch != null) {
+          number = int.parse(prevMatch.group(1)!) + 1;
+        }
+      }
+      final prefix = '$number. ';
+      newLine = '$prefix$line';
+      cursorShift = prefix.length;
+    }
+
+    _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
+
+    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    _ctrl.selection = TextSelection.collapsed(offset: newCursor);
+  }
+
+  void _onBulletList() {
+    _toggleLinePrefix('• ');
+  }
+
+  void _onChecklist() {
+    final text = _ctrl.text;
+    final sel = _ctrl.selection;
+    if (!sel.isValid) return;
+
+    final lineStart = text.lastIndexOf('\n', sel.start > 0 ? sel.start - 1 : 0);
+    final start = lineStart == -1 ? 0 : lineStart + 1;
+
+    final lineEndIndex = text.indexOf('\n', sel.start);
+    final lineEnd = lineEndIndex == -1 ? text.length : lineEndIndex;
+    final line = text.substring(start, lineEnd);
+
+    String newLine;
+    int cursorShift;
+
+    if (line.startsWith('☑ ')) {
+      newLine = line.substring(2);
+      cursorShift = -2;
+    } else if (line.startsWith('☐ ')) {
+      newLine = '☑ ${line.substring(2)}';
+      cursorShift = 0;
+    } else {
+      newLine = '☐ $line';
+      cursorShift = 2;
+    }
+
+    _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
+
+    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    _ctrl.selection = TextSelection.collapsed(offset: newCursor);
+  }
+
+  void _toggleLinePrefix(String prefix) {
+    final text = _ctrl.text;
+    final sel = _ctrl.selection;
+    if (!sel.isValid) return;
+
+    final lineStart = text.lastIndexOf('\n', sel.start > 0 ? sel.start - 1 : 0);
+    final start = lineStart == -1 ? 0 : lineStart + 1;
+
+    final lineEndIndex = text.indexOf('\n', sel.start);
+    final lineEnd = lineEndIndex == -1 ? text.length : lineEndIndex;
+    final line = text.substring(start, lineEnd);
+
+    String newLine;
+    int cursorShift;
+
+    if (line.startsWith(prefix)) {
+      newLine = line.substring(prefix.length);
+      cursorShift = -prefix.length;
+    } else {
+      newLine = '$prefix$line';
+      cursorShift = prefix.length;
+    }
+
+    _ctrl.text = text.substring(0, start) + newLine + text.substring(lineEnd);
+
+    final newCursor = (sel.start + cursorShift).clamp(start, start + newLine.length);
+    _ctrl.selection = TextSelection.collapsed(offset: newCursor);
+  }
+
   void _hide(_DismissDirection direction) {
     setState(() {
       _lastDirection = direction;
@@ -138,15 +326,14 @@ class _TextFormatterToolbarState extends State<TextFormatterToolbar>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildButton(Icons.format_bold, () {}),
-          _buildButton(Icons.format_italic, () {}),
-          _buildButton(Icons.format_underline, () {}),
-          _buildButton(Icons.text_fields, () {}),
+          _buildButton(Icons.format_bold, _onBold),
+          _buildButton(Icons.format_italic, _onItalic),
+          _buildButton(Icons.format_underline, _onUnderline),
+          _buildButton(Icons.text_fields, _onHeading),
           _buildDivider(),
-          _buildButton(Icons.format_align_left, () {}),
-          _buildButton(Icons.format_align_center, () {}),
-          _buildButton(Icons.format_align_right, () {}),
-          _buildButton(Icons.format_align_justify, () {}),
+          _buildButton(Icons.format_list_numbered, _onNumberedList),
+          _buildButton(Icons.format_list_bulleted, _onBulletList),
+          _buildButton(Icons.check_box_outlined, _onChecklist),
         ],
       ),
     );
