@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:codivium_notes_app/core/di/injection_container.dart';
+import 'package:codivium_notes_app/core/constants/note_colors.dart';
 import 'package:codivium_notes_app/features/notes/domain/entities/note.dart';
 import 'package:codivium_notes_app/features/notes/presentation/bloc/notes_bloc.dart';
 import 'package:codivium_notes_app/features/notes/presentation/bloc/notes_event.dart';
@@ -21,9 +22,13 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   late FocusNode _contentFocusNode;
+
   bool _isFavorite = false;
+  int _selectedColor = NoteColors.pastelPalette[0];
+  int _importance = 1;
   String? _noteId;
   bool _isEditing = false;
+  DateTime? _originalCreatedAt;
 
   @override
   void initState() {
@@ -55,16 +60,18 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     final content = _contentController.text.trim();
     if (title.isEmpty && content.isEmpty) return;
 
+    final now = DateTime.now();
+
     if (_isEditing && _noteId != null) {
       final updated = Note(
         id: _noteId!,
         title: title,
         content: content,
-        color: 0xFFFFEB3B,
+        color: _selectedColor,
         isFavorite: _isFavorite,
-        importance: 1,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        importance: _importance,
+        createdAt: _originalCreatedAt ?? now,
+        updatedAt: now,
       );
       _notesBloc.add(EditNote(updated));
     } else {
@@ -72,15 +79,157 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         id: const Uuid().v4(),
         title: title,
         content: content,
-        color: 0xFFFFEB3B,
+        color: _selectedColor,
         isFavorite: _isFavorite,
-        importance: 1,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        importance: _importance,
+        createdAt: now,
+        updatedAt: now,
       );
       _notesBloc.add(AddNote(newNote));
     }
     Get.back();
+  }
+
+  void _showColorPicker() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Pick a color',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: NoteColors.pastelPalette.map((color) {
+                    final isSelected = color == _selectedColor;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() => _selectedColor = color);
+                        Navigator.pop(ctx);
+                      },
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: Color(color),
+                          shape: BoxShape.circle,
+                          border: isSelected
+                              ? Border.all(color: Colors.black, width: 2.5)
+                              : Border.all(
+                                  color: Colors.grey.shade300,
+                                  width: 1,
+                                ),
+                        ),
+                        child: isSelected
+                            ? const Icon(Icons.check, size: 20)
+                            : null,
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showImportancePicker() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Set importance',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _buildImportanceOption(ctx, 1, 'Low', Icons.remove_circle_outline),
+                _buildImportanceOption(ctx, 2, 'Medium', Icons.circle_outlined),
+                _buildImportanceOption(ctx, 3, 'High', Icons.error_outline),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImportanceOption(
+    BuildContext ctx,
+    int value,
+    String label,
+    IconData icon,
+  ) {
+    final isSelected = _importance == value;
+    return ListTile(
+      leading: Icon(icon, color: isSelected ? Colors.black : Colors.grey),
+      title: Text(
+        label,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+        ),
+      ),
+      trailing: isSelected
+          ? const Icon(Icons.check, color: Colors.black)
+          : null,
+      onTap: () {
+        setState(() => _importance = value);
+        Navigator.pop(ctx);
+      },
+    );
   }
 
   @override
@@ -94,7 +243,20 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             _contentController.text = state.note.content;
             setState(() {
               _isFavorite = state.note.isFavorite;
+              _selectedColor = state.note.color;
+              _importance = state.note.importance;
+              _originalCreatedAt = state.note.createdAt;
             });
+          }
+          if (state is NoteCopied) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Copied to clipboard')),
+            );
+          }
+          if (state is NoteShared) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Note shared')),
+            );
           }
         },
         child: Scaffold(
@@ -111,6 +273,8 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const SizedBox(height: 4),
+                            _buildColorImportanceRow(),
                             const SizedBox(height: 8),
                             _buildTitleField(),
                             const SizedBox(height: 12),
@@ -126,7 +290,9 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  child: TextFormatterToolbar(controller: _contentController),
+                  child: TextFormatterToolbar(
+                    controller: _contentController,
+                  ),
                 ),
               ],
             ),
@@ -148,13 +314,11 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           const Spacer(),
           IconButton(
             onPressed: _saveNote,
-            icon: const Icon(Icons.calendar_today_outlined, size: 22),
+            icon: const Icon(Icons.check_rounded, size: 24),
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                _isFavorite = !_isFavorite;
-              });
+              setState(() => _isFavorite = !_isFavorite);
             },
             icon: Icon(
               _isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -172,6 +336,73 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildColorImportanceRow() {
+    final importanceLabels = {1: 'Low', 2: 'Medium', 3: 'High'};
+
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: _showColorPicker,
+          child: Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: Color(_selectedColor),
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey.shade300, width: 1),
+            ),
+            child: const Icon(Icons.palette_outlined, size: 14),
+          ),
+        ),
+        const SizedBox(width: 10),
+        GestureDetector(
+          onTap: _showImportancePicker,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _importance >= 3
+                      ? Icons.error_outline
+                      : _importance >= 2
+                          ? Icons.circle_outlined
+                          : Icons.remove_circle_outline,
+                  size: 14,
+                  color: Colors.black54,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  importanceLabels[_importance] ?? 'Low',
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+                const SizedBox(width: 2),
+                const Icon(Icons.arrow_drop_down, size: 16, color: Colors.black54),
+              ],
+            ),
+          ),
+        ),
+        const Spacer(),
+        if (_isEditing && _noteId != null)
+          GestureDetector(
+            onTap: () => _notesBloc.add(CopyNoteToClipboard(_noteId!)),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Icon(
+                Icons.copy_outlined,
+                size: 18,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ),
+      ],
     );
   }
 
