@@ -8,6 +8,10 @@ import 'package:codivium_notes_app/features/notes/presentation/bloc/notes_bloc.d
 import 'package:codivium_notes_app/features/notes/presentation/bloc/notes_event.dart';
 import 'package:codivium_notes_app/features/notes/presentation/bloc/notes_state.dart';
 import 'package:codivium_notes_app/features/notes/presentation/widgets/text_formatter_toolbar.dart';
+import 'package:codivium_notes_app/features/notes/presentation/widgets/todo_list_widget.dart';
+import 'package:codivium_notes_app/features/notes/domain/entities/todo.dart';
+import 'package:codivium_notes_app/features/notes/data/models/todo_model.dart';
+import 'package:codivium_notes_app/features/notes/data/datasources/notes_local_datasource.dart';
 import 'package:uuid/uuid.dart';
 
 class NoteEditorScreen extends StatefulWidget {
@@ -29,6 +33,8 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   String? _noteId;
   bool _isEditing = false;
   DateTime? _originalCreatedAt;
+  List<Todo> _todos = [];
+  List<Todo> _currentTodos = [];
 
   @override
   void initState() {
@@ -43,6 +49,46 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       _noteId = args;
       _isEditing = true;
       _notesBloc.add(LoadNoteById(_noteId!));
+      _loadTodos(_noteId!);
+    } else {
+      _noteId = const Uuid().v4();
+    }
+  }
+
+  Future<void> _loadTodos(String noteId) async {
+    final datasource = sl<NotesLocalDatasource>();
+    final todos = await datasource.getTodosForNote(noteId);
+    setState(() {
+      _todos = todos;
+      _currentTodos = List.from(todos);
+    });
+  }
+
+  Future<void> _saveTodos(String noteId) async {
+    final datasource = sl<NotesLocalDatasource>();
+
+    final oldIds = _todos.map((t) => t.id).toSet();
+    final newIds = _currentTodos.map((t) => t.id).toSet();
+
+    for (final oldTodo in _todos) {
+      if (!newIds.contains(oldTodo.id)) {
+        await datasource.deleteTodo(oldTodo.id);
+      }
+    }
+
+    for (final todo in _currentTodos) {
+      final model = TodoModel(
+        id: todo.id,
+        noteId: noteId,
+        text: todo.text,
+        isDone: todo.isDone,
+        order: todo.order,
+      );
+      if (oldIds.contains(todo.id)) {
+        await datasource.updateTodo(model);
+      } else {
+        await datasource.insertTodo(model);
+      }
     }
   }
 
@@ -55,16 +101,17 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     super.dispose();
   }
 
-  void _saveNote() {
+  void _saveNote() async {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
     if (title.isEmpty && content.isEmpty) return;
 
     final now = DateTime.now();
+    final id = _noteId ?? const Uuid().v4();
 
-    if (_isEditing && _noteId != null) {
+    if (_isEditing) {
       final updated = Note(
-        id: _noteId!,
+        id: id,
         title: title,
         content: content,
         color: _selectedColor,
@@ -76,7 +123,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       _notesBloc.add(EditNote(updated));
     } else {
       final newNote = Note(
-        id: const Uuid().v4(),
+        id: id,
         title: title,
         content: content,
         color: _selectedColor,
@@ -87,6 +134,8 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       );
       _notesBloc.add(AddNote(newNote));
     }
+
+    await _saveTodos(id);
     Get.back();
   }
 
@@ -279,6 +328,14 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                             _buildTitleField(),
                             const SizedBox(height: 12),
                             _buildContentField(),
+                            const SizedBox(height: 20),
+                            TodoListWidget(
+                              noteId: _noteId ?? '',
+                              initialTodos: _todos,
+                              onChanged: (todos) {
+                                _currentTodos = todos;
+                              },
+                            ),
                             const SizedBox(height: 80),
                           ],
                         ),
