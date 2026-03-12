@@ -1,9 +1,22 @@
 import 'package:flutter/services.dart';
 
-class ClipboardHelper {
-  ClipboardHelper._();
+typedef CopyFunction = Future<void> Function(String text);
 
-  static Future<void> copy(String text) async {
+class ClipboardHelper {
+  final CopyFunction _copy;
+
+  ClipboardHelper({CopyFunction? copy}) : _copy = copy ?? _defaultCopy;
+
+  static Future<void> _defaultCopy(String text) async {
     await Clipboard.setData(ClipboardData(text: text));
+  }
+
+  Future<bool> copy(String text) async {
+    try {
+      await _copy(text);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }
