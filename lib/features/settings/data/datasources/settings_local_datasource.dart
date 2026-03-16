@@ -1,6 +1,10 @@
 import 'package:codivium_notes_app/core/constants/db_constants.dart';
 import 'package:codivium_notes_app/core/database/database_helper.dart';
 
+
+const String CACHED_IS_DARK_MODE = 'is_dark_mode';
+const String CACHED_FONT_FAMILY = 'font_family';
+
 abstract class SettingsLocalDatasource {
   Future<bool> getIsDarkMode();
   Future<void> setIsDarkMode(bool value);
@@ -19,7 +23,7 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
     final result = await db.query(
       DbConstants.settingsTable,
       where: 'key = ?',
-      whereArgs: ['is_dark_mode'],
+      whereArgs: [CACHED_IS_DARK_MODE],
     );
     if (result.isEmpty) return false;
     return result.first['value'] == 'true';
@@ -31,12 +35,12 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
     final existing = await db.query(
       DbConstants.settingsTable,
       where: 'key = ?',
-      whereArgs: ['is_dark_mode'],
+      whereArgs: [CACHED_IS_DARK_MODE],
     );
     if (existing.isEmpty) {
       await db.insert(DbConstants.settingsTable, {
         DbConstants.columnId: 'setting_dark_mode',
-        'key': 'is_dark_mode',
+        'key': CACHED_IS_DARK_MODE,
         'value': value.toString(),
       });
     } else {
@@ -44,7 +48,7 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
         DbConstants.settingsTable,
         {'value': value.toString()},
         where: 'key = ?',
-        whereArgs: ['is_dark_mode'],
+        whereArgs: [CACHED_IS_DARK_MODE],
       );
     }
   }
@@ -55,7 +59,7 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
     final result = await db.query(
       DbConstants.settingsTable,
       where: 'key = ?',
-      whereArgs: ['font_family'],
+      whereArgs: [CACHED_FONT_FAMILY],
     );
     if (result.isEmpty) return 'Roboto';
     return result.first['value'] as String;
@@ -67,12 +71,12 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
     final existing = await db.query(
       DbConstants.settingsTable,
       where: 'key = ?',
-      whereArgs: ['font_family'],
+      whereArgs: [CACHED_FONT_FAMILY],
     );
     if (existing.isEmpty) {
       await db.insert(DbConstants.settingsTable, {
         DbConstants.columnId: 'setting_font_family',
-        'key': 'font_family',
+        'key': CACHED_FONT_FAMILY,
         'value': fontFamily,
       });
     } else {
@@ -80,7 +84,7 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
         DbConstants.settingsTable,
         {'value': fontFamily},
         where: 'key = ?',
-        whereArgs: ['font_family'],
+        whereArgs: [CACHED_FONT_FAMILY],
       );
     }
   }
