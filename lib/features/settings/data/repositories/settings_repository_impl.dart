@@ -10,16 +10,37 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<Either<Exception, AppSettings>> getSettings() async {
-    throw UnimplementedError();
+    try {
+      final isDarkMode = await localDatasource.getIsDarkMode();
+      final fontFamily = await localDatasource.getFontFamily();
+      
+      return Right(AppSettings(
+        isDarkMode: isDarkMode,
+        fontFamily: fontFamily,
+      ));
+    } catch (e) {
+      return Left(Exception('Failed to load settings from local storage'));
+    }
   }
 
   @override
   Future<Either<Exception, void>> toggleTheme() async {
-    throw UnimplementedError();
+    try {
+      final currentMode = await localDatasource.getIsDarkMode();     
+      await localDatasource.setIsDarkMode(!currentMode);
+      return const Right(null);
+    } catch (e) {
+      return Left(Exception('Failed to toggle theme'));
+    }
   }
 
   @override
   Future<Either<Exception, void>> changeFont(String fontFamily) async {
-    throw UnimplementedError();
+    try {
+      await localDatasource.setFontFamily(fontFamily);
+      return const Right(null);
+    } catch (e) {
+      return Left(Exception('Failed to change font family'));
+    }
   }
 }
