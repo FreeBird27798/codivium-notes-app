@@ -4,10 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import '../../../../helpers/test_helpers.mocks.dart';
 
 @GenerateMocks([SettingsRepository])
-import 'toggle_theme_test.mocks.dart'; 
-
 void main() {
   late ToggleTheme usecase;
   late MockSettingsRepository mockSettingsRepository;
@@ -19,8 +18,9 @@ void main() {
 
   test('should call toggleTheme from repository', () async {
     // Arrange
-    when(mockSettingsRepository.toggleTheme())
-        .thenAnswer((_) async => const Right(null));
+    when(
+      mockSettingsRepository.toggleTheme(),
+    ).thenAnswer((_) async => const Right(null));
 
     // Act
     final result = await usecase();

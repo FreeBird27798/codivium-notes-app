@@ -75,7 +75,9 @@ void main() {
     });
 
     test('should create note successfully', () async {
-      when(mockDatasource.createNote(any)).thenAnswer((_) async {});
+      when(mockDatasource.createNote(any)).thenAnswer((_) async {
+        return null;
+      });
 
       final result = await repository.createNote(testNote);
 
@@ -92,7 +94,9 @@ void main() {
     });
 
     test('should update note successfully', () async {
-      when(mockDatasource.updateNote(any)).thenAnswer((_) async {});
+      when(mockDatasource.updateNote(any)).thenAnswer((_) async {
+        return null;
+      });
 
       final result = await repository.updateNote(testNote);
 
@@ -109,7 +113,9 @@ void main() {
     });
 
     test('should delete note successfully', () async {
-      when(mockDatasource.deleteNote('note_1')).thenAnswer((_) async {});
+      when(mockDatasource.deleteNote('note_1')).thenAnswer((_) async {
+        return null;
+      });
 
       final result = await repository.deleteNote('note_1');
 
@@ -128,7 +134,9 @@ void main() {
     });
 
     test('should toggle favorite successfully', () async {
-      when(mockDatasource.toggleFavorite('note_1')).thenAnswer((_) async {});
+      when(mockDatasource.toggleFavorite('note_1')).thenAnswer((_) async {
+        return null;
+      });
 
       final result = await repository.toggleFavorite('note_1');
 
