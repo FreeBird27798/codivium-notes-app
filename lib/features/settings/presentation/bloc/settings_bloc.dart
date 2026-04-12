@@ -18,20 +18,57 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<LoadSettings>(_onLoadSettings);
     on<ToggleThemeEvent>(_onToggleTheme);
     on<ChangeFontEvent>(_onChangeFont);
+
+    add(LoadSettings());
   }
 
   Future<void> _onLoadSettings(
     LoadSettings event,
     Emitter<SettingsState> emit,
-  ) async {}
+  ) async {
+    if (state is SettingsInitial) emit(SettingsLoading());
+    
+    final result = await settingsRepository.getSettings();
+    
+    result.fold(
+      (failure) => emit(const SettingsError('Failed to load settings')),
+      (settings) => emit(SettingsLoaded(settings)),
+    );
+  }
 
   Future<void> _onToggleTheme(
     ToggleThemeEvent event,
     Emitter<SettingsState> emit,
-  ) async {}
+  ) async {
+    final result = await toggleTheme();
+    
+    result.fold(
+      (failure) => emit(const SettingsError('Failed to toggle theme')),
+      (_) async {
+        final settingsResult = await settingsRepository.getSettings();
+        settingsResult.fold(
+          (failure) => emit(const SettingsError('Failed to refresh settings')),
+          (settings) => emit(SettingsLoaded(settings)),
+        );
+      },
+    );
+  }
 
   Future<void> _onChangeFont(
     ChangeFontEvent event,
     Emitter<SettingsState> emit,
-  ) async {}
+  ) async {
+    final result = await changeFont(event.fontFamily);
+    
+    result.fold(
+      (failure) => emit(const SettingsError('Failed to change font')),
+      (_) async {
+        final settingsResult = await settingsRepository.getSettings();
+        settingsResult.fold(
+          (failure) => emit(const SettingsError('Failed to refresh settings')),
+          (settings) => emit(SettingsLoaded(settings)),
+        );
+      },
+    );
+  }
 }

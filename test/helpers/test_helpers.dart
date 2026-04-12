@@ -22,8 +22,10 @@ import 'package:codivium_notes_app/features/settings/domain/repositories/setting
 import 'package:codivium_notes_app/features/settings/data/datasources/settings_local_datasource.dart';
 import 'package:codivium_notes_app/features/settings/domain/usecases/toggle_theme.dart';
 import 'package:codivium_notes_app/features/settings/domain/usecases/change_font.dart';
+import 'package:sqflite/sqflite.dart';
 
 @GenerateMocks([
+  Database,
   DatabaseHelper,
   ClipboardHelper,
   NotesRepository,
