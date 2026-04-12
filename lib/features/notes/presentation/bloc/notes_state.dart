@@ -28,6 +28,10 @@ class NoteDetailLoaded extends NotesState {
   List<Object?> get props => [note];
 }
 
+class NoteShared extends NotesState {}
+
+class NoteCopied extends NotesState {}
+
 class NotesError extends NotesState {
   final String message;
   const NotesError(this.message);

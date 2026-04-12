@@ -20,6 +20,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final ToggleFavorite toggleFavorite;
   final SortNotesByImportance sortNotesByImportance;
   final ShareNote shareNote;
+  final ClipboardHelper clipboardHelper;
 
   NotesBloc({
     required this.getAllNotes,
@@ -30,6 +31,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     required this.toggleFavorite,
     required this.sortNotesByImportance,
     required this.shareNote,
+    required this.clipboardHelper,
   }) : super(NotesInitial()) {
     on<LoadNotes>(_onLoadNotes);
     on<LoadNoteById>(_onLoadNoteById);
@@ -143,8 +145,19 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       result.fold((error) => emit(NotesError(error.toString())), (_) {});
       return;
     }
-    final note = result.getOrElse(() => throw Exception());
-    await shareNote(title: note.title, content: note.content);
+
+    final note = result.fold((_) => null, (note) => note);
+    if (note == null) {
+      emit(const NotesError('Failed to load note for sharing'));
+      return;
+    }
+
+    try {
+      await shareNote(title: note.title, content: note.content);
+      emit(NoteShared());
+    } catch (e) {
+      emit(NotesError(e.toString()));
+    }
   }
 
   Future<void> _onCopyToClipboard(
@@ -156,7 +169,20 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       result.fold((error) => emit(NotesError(error.toString())), (_) {});
       return;
     }
-    final note = result.getOrElse(() => throw Exception());
-    await ClipboardHelper.copy('${note.title}\n\n${note.content}');
+
+    final note = result.fold((_) => null, (note) => note);
+    if (note == null) {
+      emit(const NotesError('Failed to load note for copying'));
+      return;
+    }
+
+    final copied = await clipboardHelper.copy(
+      '${note.title}\n\n${note.content}',
+    );
+    if (copied) {
+      emit(NoteCopied());
+    } else {
+      emit(const NotesError('Failed to copy to clipboard'));
+    }
   }
 }

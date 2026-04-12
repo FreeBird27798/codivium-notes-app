@@ -10,7 +10,12 @@ class CalendarRepositoryImpl implements CalendarRepository {
 
   @override
   Future<Either<Exception, List<Note>>> getNotesByDate(DateTime date) async {
-    throw UnimplementedError();
+    try {
+      final notes = await localDatasource.getNotesByDate(date);
+      return Right(notes);
+    } on Exception catch (e) {
+      return Left(e);
+    }
   }
 
   @override
@@ -18,6 +23,11 @@ class CalendarRepositoryImpl implements CalendarRepository {
     DateTime start,
     DateTime end,
   ) async {
-    throw UnimplementedError();
+    try {
+      final notes = await localDatasource.getNotesByDateRange(start, end);
+      return Right(notes);
+    } on Exception catch (e) {
+      return Left(e);
+    }
   }
 }
