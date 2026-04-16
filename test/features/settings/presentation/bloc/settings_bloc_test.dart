@@ -36,7 +36,7 @@ void main() {
     blocTest<SettingsBloc, SettingsState>(
       'emits [SettingsLoading, SettingsLoaded] when LoadSettings is added',
       build: () {
-        when(() => mockSettingsRepository.getSettings())
+        when(mockSettingsRepository.getSettings())
             .thenAnswer((_) async => Right(tAppSettings));
         
         return SettingsBloc(
@@ -52,8 +52,8 @@ void main() {
     blocTest<SettingsBloc, SettingsState>(
       'should call toggleTheme usecase and refresh settings without loading flicker',
       build: () {
-        when(() => mockToggleTheme()).thenAnswer((_) async => const Right(null));
-        when(() => mockSettingsRepository.getSettings())
+        when(mockToggleTheme.call()).thenAnswer((_) async => const Right(null));
+        when(mockSettingsRepository.getSettings())
             .thenAnswer((_) async => Right(tAppSettings));
         
         return SettingsBloc(
@@ -65,7 +65,7 @@ void main() {
       act: (bloc) => bloc.add(ToggleThemeEvent()),
       expect: () => [SettingsLoaded(tAppSettings)], 
       verify: (_) {
-        verify(() => mockToggleTheme()).called(1);
+        verify(mockToggleTheme.call()).called(1);
       },
     );
   });
