@@ -60,6 +60,12 @@ Run tests:
 flutter test
 ```
 
+## Screenshots
+
+| Notes List | Favorites | Set Importance | Pick a Color |
+|---|---|---|---|
+| ![Notes List](screenshots/notes_list.jpg) | ![Favorites](screenshots/favorites.jpg) | ![Set Importance](screenshots/importance_picker.jpg) | ![Pick a Color](screenshots/color_picker.jpg) |
+
 ## Contributors
 
 <a href="https://github.com/FreeBird27798"><img src="https://github.com/FreeBird27798.png" width="60" style="border-radius:50%"/></a>
