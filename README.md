@@ -59,3 +59,8 @@ Run tests:
 ```bash
 flutter test
 ```
+
+## Contributors
+
+<a href="https://github.com/FreeBird27798"><img src="https://github.com/FreeBird27798.png" width="60" style="border-radius:50%"/></a>
+<a href="https://github.com/AhmedZaeem"><img src="https://github.com/AhmedZaeem.png" width="60" style="border-radius:50%"/></a>
