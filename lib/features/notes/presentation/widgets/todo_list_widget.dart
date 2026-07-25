@@ -125,12 +125,10 @@ class _TodoListWidgetState extends State<TodoListWidget> {
     _notifyChanged();
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) newIndex--;
-
+  void _onReorderItem(int index, int dropIndex) {
     setState(() {
-      final item = _todos.removeAt(oldIndex);
-      _todos.insert(newIndex, item);
+      final item = _todos.removeAt(index);
+      _todos.insert(dropIndex, item);
       _reorderIndexes();
     });
     _notifyChanged();
@@ -229,7 +227,7 @@ class _TodoListWidgetState extends State<TodoListWidget> {
         );
       },
       itemCount: _todos.length,
-      onReorder: _onReorder,
+      onReorderItem: _onReorderItem,
       itemBuilder: (context, index) {
         final todo = _todos[index];
         return _buildTodoItem(todo, index);
